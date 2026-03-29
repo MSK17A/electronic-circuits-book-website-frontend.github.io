@@ -7,6 +7,14 @@ export class ApiClient {
     this.baseUrl = baseUrl;
   }
 
+  public getBaseUrl() {
+    return this.baseUrl
+  }
+
+  public getBaseUrlNoApi() {
+    return this.baseUrl.replace("/api", "")
+  }
+
   private async request<T>(
     endpoint: string,
     options?: RequestInit,

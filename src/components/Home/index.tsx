@@ -24,6 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { scrollTo } from "@/components/Navbar";
 import useHomeData from "./homeData-hook";
 import { apiClient } from "~/lib/api-client";
+import "./styles.css"
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -181,116 +182,13 @@ export default function BookLanding() {
 
   return (
     <div class="bg-[#0b0c10] text-slate-100 font-sans min-h-screen antialiased">
-      {/* ── Global Styles ──────────────────────────────────────────────────── */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
-
-        :root {
-          --gold: #f59e0b;
-          --gold-dim: #92400e;
-          --surface: #13151c;
-          --surface2: #1c1f2a;
-          --border: rgba(255,255,255,0.07);
-          --radius: 0.75rem;
-        }
-
-        * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-
-        body, #root {
-          font-family: 'DM Sans', sans-serif;
-          background: #0b0c10;
-        }
-
-        h1, h2, h3, h4 {
-          font-family: 'Playfair Display', Georgia, serif;
-        }
-
-        .book-card {
-          background: var(--surface);
-          border: 1px solid var(--border);
-          border-radius: var(--radius);
-          transition: border-color 0.2s, transform 0.2s;
-        }
-        .book-card:hover {
-          border-color: rgba(245,158,11,0.35);
-          transform: translateY(-2px);
-        }
-
-        .gradient-text {
-          background: linear-gradient(135deg, #f59e0b 0%, #fde68a 50%, #f59e0b 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        .hero-glow {
-          background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(245,158,11,0.15) 0%, transparent 70%);
-        }
-
-        .chapter-row {
-          border-bottom: 1px solid var(--border);
-          transition: background 0.15s;
-        }
-        .chapter-row:hover {
-          background: rgba(245,158,11,0.05);
-        }
-
-        .nav-link {
-          color: #94a3b8;
-          transition: color 0.15s;
-          font-size: 0.875rem;
-          font-weight: 500;
-        }
-        .nav-link:hover { color: #f59e0b; }
-
-        input, textarea {
-          background: var(--surface2) !important;
-          border: 1px solid var(--border) !important;
-          color: #f1f5f9 !important;
-          border-radius: 0.5rem !important;
-          padding: 0.625rem 0.875rem !important;
-          width: 100%;
-          outline: none;
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.9rem;
-          transition: border-color 0.15s;
-        }
-        input:focus, textarea:focus {
-          border-color: rgba(245,158,11,0.5) !important;
-        }
-        input::placeholder, textarea::placeholder {
-          color: #475569;
-        }
-
-        .plan-highlight {
-          background: linear-gradient(160deg, #1c1a10 0%, #1c1f2a 100%);
-          border-color: rgba(245,158,11,0.5) !important;
-        }
-
-        .avatar-chip {
-          width: 2.5rem;
-          height: 2.5rem;
-          border-radius: 50%;
-          background: var(--gold-dim);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 700;
-          font-size: 0.75rem;
-          color: #fde68a;
-          flex-shrink: 0;
-        }
-      `}</style>
-
-
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <section class="hero-glow relative overflow-hidden pt-24 pb-28 px-6">
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <Badge class="mb-6 bg-amber-500/15 text-amber-400 border-amber-500/30 text-xs tracking-widest uppercase">
-              50% Early-Bird Discount
-            </Badge>
+            {/* <Badge class="mb-6 bg-amber-500/15 text-amber-400 border-amber-500/30 text-xs tracking-widest uppercase"> */}
+            {/*   50% Early-Bird Discount */}
+            {/* </Badge> */}
             <h1 class="text-5xl md:text-6xl leading-tight mb-6">
               {homePageData()?.heroTitle}
               <br />
@@ -299,18 +197,6 @@ export default function BookLanding() {
             <p class="text-slate-400 text-lg mb-8 max-w-md leading-relaxed">
               {homePageData()?.description}
             </p>
-            <ul class="space-y-2 mb-10">
-              {[
-                "Learn from real experts",
-                "16 comprehensive chapters",
-                "iBooks, PDF & ePub formats",
-                "Audio book included",
-              ].map((item) => (
-                <li class="flex items-center gap-3 text-slate-300 text-sm">
-                  <span class="text-amber-400">✓</span> {item}
-                </li>
-              ))}
-            </ul>
             <div class="flex flex-wrap gap-3">
               <Button
                 size="lg"
@@ -377,28 +263,6 @@ export default function BookLanding() {
           <div class="flex justify-center">
             <div class="relative">
               <img src={`${apiClient.getBaseUrlNoApi()}${homePageData()?.heroPicture.url}`} alt="Logo" />
-              {/* <div */}
-              {/*   class="w-56 h-72 md:w-64 md:h-80 rounded-xl shadow-2xl" */}
-              {/*   style="background:linear-gradient(135deg,#92400e 0%,#f59e0b 40%,#fde68a 60%,#d97706 100%); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; flex-direction:column; gap:0.5rem;" */}
-              {/* > */}
-              {/*   <span style="font-size:4rem;">📚</span> */}
-              {/*   <span */}
-              {/*     style="font-size:1.25rem; font-weight:700; color:#0b0c10; text-align:center; padding:0 1rem; line-height:1.3" */}
-              {/*   > */}
-              {/*     Solve in 1 Minute */}
-              {/*   </span> */}
-              {/*   <span style="font-size:0.75rem; color:#0b0c10; opacity:0.7;"> */}
-              {/*     By Michale John */}
-              {/*   </span> */}
-              {/* </div> */}
-              {/* <div */}
-              {/*   class="absolute -bottom-4 -right-4 w-full h-full rounded-xl opacity-30" */}
-              {/*   style="background:linear-gradient(135deg,#92400e,#f59e0b); z-index:-1; transform:rotate(3deg);" */}
-              {/* /> */}
-              {/* <div */}
-              {/*   class="absolute -bottom-8 -right-8 w-full h-full rounded-xl opacity-15" */}
-              {/*   style="background:linear-gradient(135deg,#92400e,#f59e0b); z-index:-2; transform:rotate(6deg);" */}
-              {/* /> */}
             </div>
           </div>
         </div>
