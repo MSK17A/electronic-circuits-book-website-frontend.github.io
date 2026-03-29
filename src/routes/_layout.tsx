@@ -9,6 +9,7 @@ function LayoutComponent() {
     <div class="p-2">
       <div class="border-b">I'm a layout</div>
       <div>
+
         <Outlet />
       </div>
     </div>
