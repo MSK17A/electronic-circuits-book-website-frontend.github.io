@@ -22,6 +22,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
 import { scrollTo } from "@/components/Navbar";
+import useHomeData from "./homeData-hook";
+import { apiClient } from "~/lib/api-client";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -158,6 +160,7 @@ function SectionLabel(props: { children: string }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function BookLanding() {
+  const { homePageData, error } = useHomeData();
   const [formSent, setFormSent] = createSignal(false);
   const [contactName, setContactName] = createSignal("");
   const [contactEmail, setContactEmail] = createSignal("");
@@ -289,13 +292,12 @@ export default function BookLanding() {
               50% Early-Bird Discount
             </Badge>
             <h1 class="text-5xl md:text-6xl leading-tight mb-6">
-              Solve your daily life
+              {homePageData()?.heroTitle}
               <br />
-              <span class="gradient-text italic">problem in 1 minute</span>
+              <span class="gradient-text italic">{homePageData()?.heroSubtitle}</span>
             </h1>
             <p class="text-slate-400 text-lg mb-8 max-w-md leading-relaxed">
-              A practical, beautifully written guide for professionals who want to think
-              clearer, move faster, and build habits that last.
+              {homePageData()?.description}
             </p>
             <ul class="space-y-2 mb-10">
               {[
@@ -374,28 +376,29 @@ export default function BookLanding() {
           {/* Book mockup */}
           <div class="flex justify-center">
             <div class="relative">
-              <div
-                class="w-56 h-72 md:w-64 md:h-80 rounded-xl shadow-2xl"
-                style="background:linear-gradient(135deg,#92400e 0%,#f59e0b 40%,#fde68a 60%,#d97706 100%); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; flex-direction:column; gap:0.5rem;"
-              >
-                <span style="font-size:4rem;">📚</span>
-                <span
-                  style="font-size:1.25rem; font-weight:700; color:#0b0c10; text-align:center; padding:0 1rem; line-height:1.3"
-                >
-                  Solve in 1 Minute
-                </span>
-                <span style="font-size:0.75rem; color:#0b0c10; opacity:0.7;">
-                  By Michale John
-                </span>
-              </div>
-              <div
-                class="absolute -bottom-4 -right-4 w-full h-full rounded-xl opacity-30"
-                style="background:linear-gradient(135deg,#92400e,#f59e0b); z-index:-1; transform:rotate(3deg);"
-              />
-              <div
-                class="absolute -bottom-8 -right-8 w-full h-full rounded-xl opacity-15"
-                style="background:linear-gradient(135deg,#92400e,#f59e0b); z-index:-2; transform:rotate(6deg);"
-              />
+              <img src={`${apiClient.getBaseUrlNoApi()}${homePageData()?.heroPicture.url}`} alt="Logo" />
+              {/* <div */}
+              {/*   class="w-56 h-72 md:w-64 md:h-80 rounded-xl shadow-2xl" */}
+              {/*   style="background:linear-gradient(135deg,#92400e 0%,#f59e0b 40%,#fde68a 60%,#d97706 100%); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; flex-direction:column; gap:0.5rem;" */}
+              {/* > */}
+              {/*   <span style="font-size:4rem;">📚</span> */}
+              {/*   <span */}
+              {/*     style="font-size:1.25rem; font-weight:700; color:#0b0c10; text-align:center; padding:0 1rem; line-height:1.3" */}
+              {/*   > */}
+              {/*     Solve in 1 Minute */}
+              {/*   </span> */}
+              {/*   <span style="font-size:0.75rem; color:#0b0c10; opacity:0.7;"> */}
+              {/*     By Michale John */}
+              {/*   </span> */}
+              {/* </div> */}
+              {/* <div */}
+              {/*   class="absolute -bottom-4 -right-4 w-full h-full rounded-xl opacity-30" */}
+              {/*   style="background:linear-gradient(135deg,#92400e,#f59e0b); z-index:-1; transform:rotate(3deg);" */}
+              {/* /> */}
+              {/* <div */}
+              {/*   class="absolute -bottom-8 -right-8 w-full h-full rounded-xl opacity-15" */}
+              {/*   style="background:linear-gradient(135deg,#92400e,#f59e0b); z-index:-2; transform:rotate(6deg);" */}
+              {/* /> */}
             </div>
           </div>
         </div>

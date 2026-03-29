@@ -1,5 +1,6 @@
 import { createSignal, For } from "solid-js";
 import { Button } from "@/components/ui/button";
+import useNavbarData from "./navbarData-hook";
 
 export const NAV_LINKS = [
   { label: "About", href: "#about" },
@@ -15,6 +16,7 @@ export function scrollTo(id: string) {
 }
 
 export default function Navbar() {
+  const { navbarData, error } = useNavbarData();
   const [mobileOpen, setMobileOpen] = createSignal(false);
 
   const handleNavClick = (href: string) => {
@@ -32,7 +34,8 @@ export default function Navbar() {
             class="font-bold text-lg tracking-tight"
             style="font-family:'Playfair Display',serif"
           >
-            Book<span class="text-amber-400">Hunt</span>
+            {navbarData()?.title}
+            {/* Book<span class="text-amber-400">Hunt</span> */}
           </span>
         </div>
 
