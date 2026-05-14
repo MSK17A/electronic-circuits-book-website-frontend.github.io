@@ -24,7 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { scrollTo } from "@/components/Navbar";
 import useHomeData from "./homeData-hook";
 import { apiClient } from "~/lib/api-client";
-import "./styles.css"
+import "./styles.css";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -192,7 +192,9 @@ export default function BookLanding() {
             <h1 class="text-5xl md:text-6xl leading-tight mb-6">
               {homePageData()?.heroTitle}
               <br />
-              <span class="gradient-text italic">{homePageData()?.heroSubtitle}</span>
+              <span class="gradient-text italic">
+                {homePageData()?.heroSubtitle}
+              </span>
             </h1>
             <p class="text-slate-400 text-lg mb-8 max-w-md leading-relaxed">
               {homePageData()?.description}
@@ -207,7 +209,10 @@ export default function BookLanding() {
               </Button>
 
               {/* Free chapter modal */}
-              <Dialog open={freeChapterOpen()} onOpenChange={setFreeChapterOpen}>
+              <Dialog
+                open={freeChapterOpen()}
+                onOpenChange={setFreeChapterOpen}
+              >
                 <DialogTrigger
                   as={Button}
                   variant="outline"
@@ -225,7 +230,8 @@ export default function BookLanding() {
                       Get a Free Chapter
                     </DialogTitle>
                     <DialogDescription class="text-slate-400">
-                      Enter your email and we'll send Chapter 1 instantly — no strings attached.
+                      Enter your email and we'll send Chapter 1 instantly — no
+                      strings attached.
                     </DialogDescription>
                   </DialogHeader>
                   <Show
@@ -242,7 +248,9 @@ export default function BookLanding() {
                         placeholder="you@example.com"
                         required
                         value={subscribeEmail()}
-                        onInput={(e) => setSubscribeEmail(e.currentTarget.value)}
+                        onInput={(e) =>
+                          setSubscribeEmail(e.currentTarget.value)
+                        }
                       />
                       <DialogFooter>
                         <Button
@@ -262,7 +270,7 @@ export default function BookLanding() {
           {/* Book mockup */}
           <div class="flex justify-center">
             <div class="relative">
-              <img src={`${apiClient.getBaseUrlNoApi()}${homePageData()?.heroPicture.url}`} alt="Logo" />
+              <img src={`${homePageData()?.heroPicture.url}`} alt="Logo" />
             </div>
           </div>
         </div>
@@ -279,8 +287,8 @@ export default function BookLanding() {
               <span class="gradient-text">right in your hands</span>
             </h2>
             <p class="text-slate-400 max-w-xl mx-auto leading-relaxed">
-              Beautifully crafted for entrepreneurs, managers, and students who want to
-              turn ideas into meaningful action every single day.
+              Beautifully crafted for entrepreneurs, managers, and students who
+              want to turn ideas into meaningful action every single day.
             </p>
           </div>
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -297,7 +305,9 @@ export default function BookLanding() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p class="text-slate-400 text-sm leading-relaxed">{f.desc}</p>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                      {f.desc}
+                    </p>
                   </CardContent>
                 </Card>
               )}
@@ -315,8 +325,8 @@ export default function BookLanding() {
               Chapters <span class="gradient-text italic">we've covered</span>
             </h2>
             <p class="text-slate-400 max-w-xl mx-auto">
-              Nine deeply researched chapters, each packed with practical frameworks you
-              can apply the same day.
+              Nine deeply researched chapters, each packed with practical
+              frameworks you can apply the same day.
             </p>
           </div>
           <div class="book-card overflow-hidden">
@@ -326,7 +336,9 @@ export default function BookLanding() {
                   <span class="text-amber-400 font-mono text-sm font-bold shrink-0">
                     {ch.num}
                   </span>
-                  <span class="flex-1 text-slate-200 font-medium">{ch.title}</span>
+                  <span class="flex-1 text-slate-200 font-medium">
+                    {ch.title}
+                  </span>
                   <span class="text-slate-500 text-sm">{ch.pages} pages</span>
                   <span class="text-slate-600 text-sm">→</span>
                 </div>
@@ -340,9 +352,12 @@ export default function BookLanding() {
       <section class="py-16 px-6 bg-[#0e0f14]">
         <div class="max-w-2xl mx-auto text-center">
           <SectionLabel>Free Preview</SectionLabel>
-          <h2 class="text-3xl md:text-4xl mb-4">Get a free chapter of this book</h2>
+          <h2 class="text-3xl md:text-4xl mb-4">
+            Get a free chapter of this book
+          </h2>
           <p class="text-slate-400 mb-8 text-sm">
-            Subscribe now — ePub, PDF & iBooks versions included with every download.
+            Subscribe now — ePub, PDF & iBooks versions included with every
+            download.
           </p>
           <Show
             when={!subscribed()}
@@ -352,7 +367,10 @@ export default function BookLanding() {
               </p>
             }
           >
-            <form onSubmit={handleSubscribe} class="flex gap-3 max-w-sm mx-auto">
+            <form
+              onSubmit={handleSubscribe}
+              class="flex gap-3 max-w-sm mx-auto"
+            >
               <input
                 type="email"
                 placeholder="Enter your email"
@@ -381,8 +399,8 @@ export default function BookLanding() {
               From <span class="gradient-text italic">happy readers</span>
             </h2>
             <p class="text-slate-400 max-w-xl mx-auto">
-              Thousands of professionals have used this book to change how they work and
-              think.
+              Thousands of professionals have used this book to change how they
+              work and think.
             </p>
           </div>
           <div class="grid md:grid-cols-3 gap-6">
@@ -437,15 +455,20 @@ export default function BookLanding() {
 
             <div class="p-10 flex flex-col justify-center">
               <SectionLabel>Meet the Author</SectionLabel>
-              <h2 class="text-3xl mb-2" style="font-family:'Playfair Display',serif">
+              <h2
+                class="text-3xl mb-2"
+                style="font-family:'Playfair Display',serif"
+              >
                 Michale John
               </h2>
-              <p class="text-amber-400 text-sm mb-6">Bestselling Author & Educator</p>
+              <p class="text-amber-400 text-sm mb-6">
+                Bestselling Author & Educator
+              </p>
               <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                Michale has spent 15 years helping professionals unlock their potential
-                through structured thinking and intentional habit design. His books have
-                been translated into 12 languages and read by over 2 million people
-                worldwide.
+                Michale has spent 15 years helping professionals unlock their
+                potential through structured thinking and intentional habit
+                design. His books have been translated into 12 languages and
+                read by over 2 million people worldwide.
               </p>
               <ul class="space-y-2 mb-8">
                 {[
@@ -488,17 +511,19 @@ export default function BookLanding() {
               Choose your <span class="gradient-text italic">edition</span>
             </h2>
             <p class="text-slate-400 max-w-xl mx-auto">
-              Every edition is a one-time purchase — no subscriptions, no hidden fees.
+              Every edition is a one-time purchase — no subscriptions, no hidden
+              fees.
             </p>
           </div>
           <div class="grid md:grid-cols-3 gap-6 items-stretch">
             <For each={PLANS}>
               {(plan) => (
                 <Card
-                  class={`book-card flex flex-col ${plan.highlight
-                    ? "plan-highlight border-amber-500/40 scale-[1.02]"
-                    : "bg-[#13151c]"
-                    }`}
+                  class={`book-card flex flex-col ${
+                    plan.highlight
+                      ? "plan-highlight border-amber-500/40 scale-[1.02]"
+                      : "bg-[#13151c]"
+                  }`}
                 >
                   <CardHeader class="pb-2">
                     <Show when={plan.badge}>
@@ -533,10 +558,11 @@ export default function BookLanding() {
                   <CardFooter class="pt-6">
                     <Button
                       variant={plan.variant}
-                      class={`w-full font-semibold ${plan.highlight
-                        ? "bg-amber-500 hover:bg-amber-400 text-black border-0"
-                        : "border-white/15 text-slate-300 hover:border-amber-400/40"
-                        }`}
+                      class={`w-full font-semibold ${
+                        plan.highlight
+                          ? "bg-amber-500 hover:bg-amber-400 text-black border-0"
+                          : "border-white/15 text-slate-300 hover:border-amber-400/40"
+                      }`}
                     >
                       {plan.cta}
                     </Button>
@@ -557,8 +583,8 @@ export default function BookLanding() {
               Contact the <span class="gradient-text italic">Author</span>
             </h2>
             <p class="text-slate-400 max-w-xl mx-auto">
-              Questions about the book, bulk orders, or speaking engagements? Michale
-              personally reads every message.
+              Questions about the book, bulk orders, or speaking engagements?
+              Michale personally reads every message.
             </p>
           </div>
           <div class="book-card bg-[#13151c] p-10">
