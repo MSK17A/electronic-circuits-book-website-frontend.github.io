@@ -1,10 +1,13 @@
-name: Bun CI
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: ["main"]
-  pull_request:
-    branches: ["main"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
@@ -24,5 +27,20 @@ jobs:
       - name: Build
         run: bun run build
 
-      # - name: Test
-      #   run: bun test
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
