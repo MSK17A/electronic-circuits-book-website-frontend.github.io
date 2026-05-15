@@ -3,10 +3,12 @@ import "solid-devtools";
 import { RouterProvider, createRouter } from "@tanstack/solid-router";
 import { routeTree } from "./routeTree.gen";
 import "./styles.css";
+import { BASE_URL } from "./lib/constants";
 
 // Set up a Router instance
 const router = createRouter({
   routeTree,
+  basepath: BASE_URL,
   defaultPreload: "intent",
   defaultStaleTime: 5000,
   scrollRestoration: true,
