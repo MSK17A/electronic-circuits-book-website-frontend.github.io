@@ -7,7 +7,7 @@ import devtools from "solid-devtools/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "electronic-circuits-book-website-frontend",
+  base: "/electronic-circuits-book-website-frontend/",
   plugins: [devtools(), tanstackRouter({ target: "solid" }), solid()],
   resolve: {
     alias: {
