@@ -14,8 +14,15 @@ export interface HomePageData {
     url: string;
   };
   aboutTheBook: string;
+  aboutTheAuthor: string;
+  author_credentials: AuthorCredentials[];
   id: number;
   publishedId: string;
   updatedAt: string;
+}
+
+interface AuthorCredentials {
+  description: string;
+  icon: string;
 }
 export type HomePageDataResponse = ApiBaseResponse<HomePageData>;

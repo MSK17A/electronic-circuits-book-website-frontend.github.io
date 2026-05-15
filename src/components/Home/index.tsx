@@ -24,6 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { scrollTo } from "@/components/Navbar";
 import useHomeData from "./homeData-hook";
 import "./styles.css";
+import StrapiLucidIcon from "../ui/strapi-lucid-icon";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -98,24 +99,24 @@ const INFO_CARDS: { icon: string; title: string; body: string }[] = [
   },
 ];
 
-const AUTHOR_CREDENTIALS: { icon: string; text: string }[] = [
-  { icon: "🎓", text: "M.Sc. Digital Communications — University of Kent, UK" },
-  { icon: "🎓", text: "Ph.D. Communications — University of Manchester, UK" },
-  {
-    icon: "🏛️",
-    text: "Visiting Scientist — University of Victoria, Canada & Purdue University, USA",
-  },
-  { icon: "📄", text: "40+ published journal and conference papers" },
-  {
-    icon: "💡",
-    text: "3 patents specialising in electronics for digital communications",
-  },
-  {
-    icon: "🔬",
-    text: "Reviewer for IET, IEEE PACRIM, and other international journals",
-  },
-  { icon: "🏅", text: "Chartered Engineer & Member of IET (UK)" },
-];
+// const AUTHOR_CREDENTIALS: { icon: string; text: string }[] = [
+//   { icon: "🎓", text: "M.Sc. Digital Communications — University of Kent, UK" },
+//   { icon: "🎓", text: "Ph.D. Communications — University of Manchester, UK" },
+//   {
+//     icon: "🏛️",
+//     text: "Visiting Scientist — University of Victoria, Canada & Purdue University, USA",
+//   },
+//   { icon: "📄", text: "40+ published journal and conference papers" },
+//   {
+//     icon: "💡",
+//     text: "3 patents specialising in electronics for digital communications",
+//   },
+//   {
+//     icon: "🔬",
+//     text: "Reviewer for IET, IEEE PACRIM, and other international journals",
+//   },
+//   { icon: "🏅", text: "Chartered Engineer & Member of IET (UK)" },
+// ];
 
 const CHAPTERS: {
   num: string;
@@ -347,6 +348,8 @@ export default function BookLanding() {
     e.preventDefault();
     setSubscribed(true);
   };
+
+  const AUTHOR_CREDENTIALS = homePageData()?.author_credentials;
 
   return (
     <div
@@ -925,20 +928,10 @@ export default function BookLanding() {
               >
                 Professor of Electronics & Author
               </p>
-              <p class="text-slate-300 text-sm leading-relaxed mb-3">
-                A-Imam Al-Sammak has over thirty years of university teaching
-                experience, where he taught analog and digital communications,
-                electric circuits, and electronics. He has published more than
-                40 journal and conference papers and holds three patents
-                specialising in electronics for digital communications.
+              <p class="text-slate-300 text-sm leading-relaxed mb-3 whitespace-pre-line">
+                {homePageData()?.aboutTheAuthor}
               </p>
-              <p class="text-slate-400 text-sm leading-relaxed mb-7">
-                Dr Al-Sammak acted as a reviewer for international conferences
-                and journals including IET Wireless Sensor Systems, IET
-                Electronics Letters, IET Communications and IEEE PACRIM. He has
-                been a visiting scientist at the University of Victoria, Canada
-                and Purdue University, USA.
-              </p>
+
               <div class="flex flex-wrap gap-3">
                 <MagentaBtn href={TOC_PDF_URL} size="sm">
                   Read TOC (PDF)
@@ -971,14 +964,18 @@ export default function BookLanding() {
 
           {/* Credential chips */}
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            <For each={AUTHOR_CREDENTIALS}>
+            <For each={homePageData()?.author_credentials}>
               {(c) => (
                 <div
                   class="book-card flex items-start gap-3 px-5 py-4 rounded-xl"
                   style="background: var(--surface);"
                 >
-                  <span class="text-xl shrink-0 mt-0.5">{c.icon}</span>
-                  <p class="text-slate-300 text-sm leading-relaxed">{c.text}</p>
+                  <span class="text-xl shrink-0 mt-0.5">
+                    <StrapiLucidIcon name={c.icon} />
+                  </span>
+                  <p class="text-slate-300 text-sm leading-relaxed">
+                    {c.description}
+                  </p>
                 </div>
               )}
             </For>
