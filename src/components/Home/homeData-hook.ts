@@ -10,32 +10,34 @@ export default function useHomeData() {
   onMount(() => {
     fetchNavbar();
     fetchHomePageData();
-  })
+  });
 
   const fetchHomePageData = async () => {
     try {
-      const homePageDataResponse = await apiClient.get<HomePageDataResponse>("/homepage?populate=*")
-
-      setHomePageData(homePageDataResponse.data)
-      setError("")
+      const homePageDataResponse = await apiClient.get<HomePageDataResponse>(
+        "/homepage?populate=*",
+      );
+      console.log(homePageDataResponse);
+      setHomePageData(homePageDataResponse.data);
+      setError("");
     } catch {
-      setError("Cant fetch homepage!")
+      setError("Cant fetch homepage!");
     }
-  }
+  };
 
   const fetchNavbar = async () => {
     try {
-      const navBarResponse = await apiClient.get("/navbar")
-      setNavbarData(navBarResponse)
-      setError("")
+      const navBarResponse = await apiClient.get("/navbar");
+      setNavbarData(navBarResponse);
+      setError("");
     } catch {
-      setError("Cannot fetch /navbar")
+      setError("Cannot fetch /navbar");
     }
-  }
+  };
 
   return {
     homePageData,
     fetchNavbar,
-    error
-  }
+    error,
+  };
 }

@@ -4,22 +4,27 @@ import { NAV_LINKS, scrollTo } from "@/components/Navbar";
 
 export default function Footer() {
   return (
-    <footer class="border-t border-white/5 bg-[#0b0c10] py-12 px-6">
+    <footer
+      class="py-12 px-6"
+      style="border-top: 1px solid rgba(255,255,255,0.05); background: #0b0f1f;"
+    >
       <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 mb-10">
         {/* Brand */}
         <div>
           <div class="flex items-center gap-2 mb-4">
-            <span class="text-amber-400 text-xl">📚</span>
+            <span class="text-xl" style="color: var(--magenta)">
+              📚
+            </span>
             <span
               class="font-bold text-lg"
               style="font-family:'Playfair Display',serif"
             >
-              Book<span class="text-amber-400">Hunt</span>
+              Book<span style="color: var(--magenta)">Hunt</span>
             </span>
           </div>
           <p class="text-slate-500 text-sm leading-relaxed max-w-xs">
-            A collection of books that help professionals live and work with more
-            intention, clarity, and impact.
+            A collection of books that help professionals live and work with
+            more intention, clarity, and impact.
           </p>
         </div>
 
@@ -34,7 +39,11 @@ export default function Footer() {
                 <li>
                   <a
                     href={l.href}
-                    class="text-slate-500 hover:text-amber-400 text-sm transition-colors"
+                    class="text-slate-500 text-sm transition-colors"
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = "var(--magenta)")
+                    }
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "")}
                     onClick={(e) => {
                       e.preventDefault();
                       scrollTo(l.href);
@@ -61,15 +70,25 @@ export default function Footer() {
         </div>
       </div>
 
-      <Separator class="bg-white/5 mb-8" />
+      <Separator style="background: rgba(255,255,255,0.05); margin-bottom: 2rem;" />
 
       <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-slate-600 text-xs">
         <p>© 2025 BookHunt. All rights reserved.</p>
         <div class="flex gap-6">
-          <a href="#" class="hover:text-slate-400 transition-colors">
+          <a
+            href="#"
+            class="transition-colors"
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#94a3b8")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+          >
             Terms & Conditions
           </a>
-          <a href="#" class="hover:text-slate-400 transition-colors">
+          <a
+            href="#"
+            class="transition-colors"
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#94a3b8")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+          >
             Privacy Policy
           </a>
         </div>

@@ -2,19 +2,20 @@ import { string } from "zod";
 import { ApiBaseResponse } from "~/types";
 
 export interface HomePageData {
-  createdAt: string,
-  documentId: string,
-  heroSubtitle: string,
-  heroTitle: string,
-  description: string,
-  testimonials: string[],
+  createdAt: string;
+  documentId: string;
+  heroSubtitle: string;
+  heroTitle: string;
+  description: string;
+  testimonials: string[];
   heroPicture: {
-    width: number,
-    height: number,
-    url: string
-  }
-  id: number,
-  publishedId: string,
-  updatedAt: string,
+    width: number;
+    height: number;
+    url: string;
+  };
+  aboutTheBook: string;
+  id: number;
+  publishedId: string;
+  updatedAt: string;
 }
-export type HomePageDataResponse = ApiBaseResponse<HomePageData>
+export type HomePageDataResponse = ApiBaseResponse<HomePageData>;

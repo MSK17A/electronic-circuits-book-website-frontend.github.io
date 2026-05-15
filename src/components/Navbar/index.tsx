@@ -25,17 +25,21 @@ export default function Navbar() {
   };
 
   return (
-    <header class="sticky top-0 z-50 border-b border-white/5 bg-[#0b0c10]/80 backdrop-blur-md">
+    <header
+      class="sticky top-0 z-50 backdrop-blur-md"
+      style="border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(11,15,31,0.82);"
+    >
       <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
         {/* Logo */}
         <div class="flex items-center gap-2">
-          <span class="text-amber-400 text-2xl">📚</span>
+          <span class="text-2xl" style="color: var(--magenta)">
+            📚
+          </span>
           <span
             class="font-bold text-lg tracking-tight"
             style="font-family:'Playfair Display',serif"
           >
             {navbarData()?.title}
-            {/* Book<span class="text-amber-400">Hunt</span> */}
           </span>
         </div>
 
@@ -60,7 +64,12 @@ export default function Navbar() {
         <div class="flex items-center gap-3">
           <Button
             size="sm"
-            class="hidden md:flex bg-amber-500 hover:bg-amber-400 text-black font-semibold"
+            class="hidden md:flex font-semibold text-white"
+            style="background: var(--magenta); border: none;"
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#e63d7a")}
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "var(--magenta)")
+            }
             onClick={() => scrollTo("#pricing")}
           >
             Get the Book
@@ -79,7 +88,10 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen() && (
-        <div class="md:hidden bg-[#13151c] border-t border-white/5 px-6 py-4 flex flex-col gap-4">
+        <div
+          class="md:hidden px-6 py-4 flex flex-col gap-4"
+          style="background: var(--surface); border-top: 1px solid rgba(255,255,255,0.05);"
+        >
           <For each={NAV_LINKS}>
             {(link) => (
               <a
@@ -95,7 +107,12 @@ export default function Navbar() {
             )}
           </For>
           <Button
-            class="bg-amber-500 hover:bg-amber-400 text-black font-semibold mt-2"
+            class="font-semibold mt-2 text-white"
+            style="background: var(--magenta); border: none;"
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#e63d7a")}
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "var(--magenta)")
+            }
             onClick={() => scrollTo("#pricing")}
           >
             Get the Book

@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from "@/components/ui/card";
 import {
   Dialog,
@@ -23,57 +23,169 @@ import { Separator } from "@/components/ui/separator";
 
 import { scrollTo } from "@/components/Navbar";
 import useHomeData from "./homeData-hook";
-import { apiClient } from "~/lib/api-client";
 import "./styles.css";
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const AMAZON_URL =
+  "https://www.amazon.com/Electronic-Circuits-Fundamentals-Mathcad-Examples/dp/B0CJKL2N47/";
+const TOC_PDF_URL =
+  "https://electronic-circuits.com/wp-content/uploads/2023/12/Electronic-Circuits-TOC.pdf";
+const SAMPLE_CH5_URL =
+  "https://electronic-circuits.com/wp-content/uploads/2024/01/Sample-chapter-Chapter-5.pdf";
+const MATHCAD_ZIP_URL =
+  "https://electronic-circuits.com/wp-content/uploads/2024/01/Book-examples.zip";
+
+const SHARE_BASE = "https://electronic-circuits.com/download-book/";
+const SOCIAL_LINKS: { label: string; href: string }[] = [
+  {
+    label: "Facebook",
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SHARE_BASE)}`,
+  },
+  {
+    label: "Twitter / X",
+    href: `https://twitter.com/intent/tweet?url=${encodeURIComponent(SHARE_BASE)}`,
+  },
+  {
+    label: "LinkedIn",
+    href: `http://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(SHARE_BASE)}`,
+  },
+  {
+    label: "WhatsApp",
+    href: `https://api.whatsapp.com/send?text=${encodeURIComponent(SHARE_BASE)}`,
+  },
+];
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const FEATURES = [
+const KEY_FEATURES_LEFT: string[] = [
+  "Concentrate on underlying principle and the logic behind the topic studied.",
+  "Present important and fundamental topics in a simple way.",
+  "Theory presented in compact form with all necessary information for student understanding.",
+  "Examples given show all steps.",
+  "Theory is discussed through examples (most of the time).",
+];
+
+const KEY_FEATURES_RIGHT: string[] = [
+  "Many examples are provided (a total of 82).",
+  "Several Mathcad examples are given.",
+  "Students will understand the operation of electronic circuits and small systems.",
+  "They will also be able to design simple circuits.",
+  "Inexpensive book that is affordable by students around the world.",
+  "Mathcad programs are found on the website, available for download.",
+];
+
+const INFO_CARDS: { icon: string; title: string; body: string }[] = [
+  {
+    icon: "🧠",
+    title: "Teaching Philosophy",
+    body: "Students should know the underlying principle and logic behind every topic — made simple and easy to apply. By mastering fundamental concepts, students develop the confidence to tackle any new problem or situation.",
+  },
   {
     icon: "🎓",
-    title: "Learn From Experts",
-    desc: "Step-by-step guidance from seasoned professionals with real-world experience.",
+    title: "Audience",
+    body: "Intended for undergraduate Electrical & Electronic Engineering programs. Can be used as a primary text, a compact review for a second electronics course, or for programs requiring a single electronics course.",
   },
   {
-    icon: "📖",
-    title: "16 Chapters Included",
-    desc: "Comprehensive coverage from fundamentals to advanced techniques.",
+    icon: "📐",
+    title: "Pre-requisites",
+    body: "Foundational knowledge in 1st-year calculus and basic circuit theory is expected to effectively grasp the concepts presented throughout the book.",
   },
   {
-    icon: "📱",
-    title: "Any Device",
-    desc: "iBooks, PDF & ePub versions — read anywhere, anytime.",
-  },
-  {
-    icon: "🎧",
-    title: "Audio Book",
-    desc: "Full audio narration included with every purchase.",
-  },
-  {
-    icon: "🏆",
-    title: "10+ Awards",
-    desc: "Recognised internationally for design and educational excellence.",
-  },
-  {
-    icon: "🔄",
-    title: "Lifetime Updates",
-    desc: "Free updates as the field evolves — your purchase never goes stale.",
+    icon: "📡",
+    title: "Book Coverage",
+    body: "Covers theory and applications of BJT, MOSFET, and Op-amp as active devices — nine chapters from bipolar junction transistors through fundamentals of feedback and oscillators.",
   },
 ];
 
-const CHAPTERS = [
-  { num: "01", title: "The Data Science Process", pages: 24 },
-  { num: "02", title: "The Rise of Trend Design", pages: 18 },
-  { num: "03", title: "Visual Thinking & Ideation", pages: 22 },
-  { num: "04", title: "Creative Problem Solving", pages: 30 },
-  { num: "05", title: "Communication Frameworks", pages: 20 },
-  { num: "06", title: "Building Consistent Habits", pages: 16 },
-  { num: "07", title: "Time & Energy Mastery", pages: 28 },
-  { num: "08", title: "Leadership From Within", pages: 26 },
-  { num: "09", title: "Measuring What Matters", pages: 22 },
+const AUTHOR_CREDENTIALS: { icon: string; text: string }[] = [
+  { icon: "🎓", text: "M.Sc. Digital Communications — University of Kent, UK" },
+  { icon: "🎓", text: "Ph.D. Communications — University of Manchester, UK" },
+  {
+    icon: "🏛️",
+    text: "Visiting Scientist — University of Victoria, Canada & Purdue University, USA",
+  },
+  { icon: "📄", text: "40+ published journal and conference papers" },
+  {
+    icon: "💡",
+    text: "3 patents specialising in electronics for digital communications",
+  },
+  {
+    icon: "🔬",
+    text: "Reviewer for IET, IEEE PACRIM, and other international journals",
+  },
+  { icon: "🏅", text: "Chartered Engineer & Member of IET (UK)" },
 ];
 
-const TESTIMONIALS = [
+const CHAPTERS: {
+  num: string;
+  title: string;
+  figures: number;
+  examples: number;
+  pages: number;
+}[] = [
+  {
+    num: "1",
+    title: "Bipolar Junction Transistor (BJT)",
+    figures: 58,
+    examples: 16,
+    pages: 59,
+  },
+  {
+    num: "2",
+    title: "Field Effect Transistor (FET)",
+    figures: 41,
+    examples: 12,
+    pages: 47,
+  },
+  {
+    num: "3",
+    title: "Multi-stage Amplifiers",
+    figures: 41,
+    examples: 12,
+    pages: 28,
+  },
+  {
+    num: "4",
+    title: "Basic Building Blocks for Integrated Circuit Amplifiers",
+    figures: 44,
+    examples: 8,
+    pages: 34,
+  },
+  {
+    num: "5",
+    title: "Differential Amplifiers",
+    figures: 24,
+    examples: 6,
+    pages: 22,
+  },
+  { num: "6", title: "Op-amp", figures: 23, examples: 4, pages: 17 },
+  { num: "7", title: "Power Amp", figures: 27, examples: 5, pages: 22 },
+  { num: "8", title: "Freq Response", figures: 43, examples: 6, pages: 24 },
+  { num: "9", title: "FB", figures: 33, examples: 15, pages: 36 },
+  { num: "Appendices", title: "", figures: 3, examples: 2, pages: 8 },
+];
+
+const TOTALS = {
+  figures: CHAPTERS.reduce((s, c) => s + c.figures, 0),
+  examples: CHAPTERS.reduce((s, c) => s + c.examples, 0),
+  pages: CHAPTERS.reduce((s, c) => s + c.pages, 0),
+};
+
+const STAT_PILLS: { value: string; label: string }[] = [
+  { value: "337", label: "Figures" },
+  { value: "86", label: "Examples" },
+  { value: "297", label: "Pages" },
+  { value: "9", label: "Chapters" },
+];
+
+const TESTIMONIALS: {
+  name: string;
+  role: string;
+  text: string;
+  avatar: string;
+  rating: number;
+}[] = [
   {
     name: "Sarah Chen",
     role: "Product Designer",
@@ -97,7 +209,16 @@ const TESTIMONIALS = [
   },
 ];
 
-const PLANS = [
+const PLANS: {
+  name: string;
+  price: string;
+  period: string;
+  highlight: boolean;
+  badge: string | null;
+  features: string[];
+  cta: string;
+  variant: "outline" | "default";
+}[] = [
   {
     name: "Free",
     price: "$0",
@@ -106,7 +227,7 @@ const PLANS = [
     badge: null,
     features: ["1 Free Chapter (PDF)", "Email Newsletter", "Community Access"],
     cta: "Download Free",
-    variant: "outline" as const,
+    variant: "outline",
   },
   {
     name: "eBook",
@@ -121,7 +242,7 @@ const PLANS = [
       "Private Community",
     ],
     cta: "Buy eBook",
-    variant: "default" as const,
+    variant: "default",
   },
   {
     name: "Full Edition",
@@ -136,15 +257,15 @@ const PLANS = [
       "Priority Support",
     ],
     cta: "Buy Full Edition",
-    variant: "outline" as const,
+    variant: "outline",
   },
 ];
 
-// ─── Shared sub-components ────────────────────────────────────────────────────
+// ─── Sub-components ───────────────────────────────────────────────────────────
 
 function Stars(props: { count: number }) {
   return (
-    <div class="flex gap-0.5 text-amber-400">
+    <div class="flex gap-0.5" style="color: var(--magenta)">
       <For each={Array(props.count).fill(0)}>{() => <span>★</span>}</For>
     </div>
   );
@@ -152,16 +273,64 @@ function Stars(props: { count: number }) {
 
 function SectionLabel(props: { children: string }) {
   return (
-    <span class="inline-block text-xs font-semibold tracking-[0.2em] uppercase text-amber-400 mb-3">
+    <span
+      class="inline-block text-xs font-semibold tracking-[0.2em] uppercase mb-3"
+      style="color: var(--magenta)"
+    >
       {props.children}
     </span>
   );
 }
 
+function MagentaBtn(props: {
+  href?: string;
+  onClick?: () => void;
+  class?: string;
+  children: string;
+  size?: "sm" | "lg";
+}) {
+  const btnClass = `font-bold text-white ${props.class ?? ""}`;
+  const style = "background: var(--magenta); border: none;";
+  const hover = (e: MouseEvent & { currentTarget: HTMLElement }) =>
+    (e.currentTarget.style.background = "#e63d7a");
+  const leave = (e: MouseEvent & { currentTarget: HTMLElement }) =>
+    (e.currentTarget.style.background = "var(--magenta)");
+
+  if (props.href) {
+    return (
+      <a href={props.href} target="_blank" rel="noopener noreferrer">
+        <Button
+          size={props.size}
+          class={btnClass}
+          style={style}
+          onMouseEnter={hover}
+          onMouseLeave={leave}
+        >
+          {props.children}
+        </Button>
+      </a>
+    );
+  }
+  return (
+    <Button
+      size={props.size}
+      class={btnClass}
+      style={style}
+      onMouseEnter={hover}
+      onMouseLeave={leave}
+      onClick={props.onClick}
+    >
+      {props.children}
+    </Button>
+  );
+}
+
+const COL_GRID = "grid-template-columns: 110px 1fr 130px 140px 120px;";
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function BookLanding() {
-  const { homePageData, error } = useHomeData();
+  const { homePageData } = useHomeData();
   const [formSent, setFormSent] = createSignal(false);
   const [contactName, setContactName] = createSignal("");
   const [contactEmail, setContactEmail] = createSignal("");
@@ -170,25 +339,24 @@ export default function BookLanding() {
   const [subscribeEmail, setSubscribeEmail] = createSignal("");
   const [subscribed, setSubscribed] = createSignal(false);
 
-  function handleContactSubmit(e: Event) {
+  const handleContactSubmit = (e: Event) => {
     e.preventDefault();
     setFormSent(true);
-  }
-
-  function handleSubscribe(e: Event) {
+  };
+  const handleSubscribe = (e: Event) => {
     e.preventDefault();
     setSubscribed(true);
-  }
+  };
 
   return (
-    <div class="bg-[#0b0c10] text-slate-100 font-sans min-h-screen antialiased">
+    <div
+      class="text-slate-100 font-sans min-h-screen antialiased"
+      style="background: #0b0f1f"
+    >
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <section class="hero-glow relative overflow-hidden pt-24 pb-28 px-6">
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
-            {/* <Badge class="mb-6 bg-amber-500/15 text-amber-400 border-amber-500/30 text-xs tracking-widest uppercase"> */}
-            {/*   50% Early-Bird Discount */}
-            {/* </Badge> */}
             <h1 class="text-5xl md:text-6xl leading-tight mb-6">
               {homePageData()?.heroTitle}
               <br />
@@ -200,15 +368,10 @@ export default function BookLanding() {
               {homePageData()?.description}
             </p>
             <div class="flex flex-wrap gap-3">
-              <Button
-                size="lg"
-                class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-8"
-                onClick={() => scrollTo("#pricing")}
-              >
-                Get the Book — $49
-              </Button>
+              <MagentaBtn size="lg" onClick={() => scrollTo("#pricing")}>
+                Get the Book
+              </MagentaBtn>
 
-              {/* Free chapter modal */}
               <Dialog
                 open={freeChapterOpen()}
                 onOpenChange={setFreeChapterOpen}
@@ -217,11 +380,26 @@ export default function BookLanding() {
                   as={Button}
                   variant="outline"
                   size="lg"
-                  class="border-white/15 text-slate-300 hover:text-white hover:border-amber-400/40"
+                  class="text-slate-300 hover:text-white"
+                  style="border-color: rgba(255,255,255,0.15);"
+                  onMouseEnter={(
+                    e: MouseEvent & { currentTarget: HTMLElement },
+                  ) =>
+                    (e.currentTarget.style.borderColor = "rgba(212,35,110,0.4)")
+                  }
+                  onMouseLeave={(
+                    e: MouseEvent & { currentTarget: HTMLElement },
+                  ) =>
+                    (e.currentTarget.style.borderColor =
+                      "rgba(255,255,255,0.15)")
+                  }
                 >
                   Free Chapter →
                 </DialogTrigger>
-                <DialogContent class="bg-[#13151c] border border-white/10 text-slate-100 max-w-md">
+                <DialogContent
+                  class="border text-slate-100 max-w-md"
+                  style="background: var(--surface); border-color: rgba(255,255,255,0.1);"
+                >
                   <DialogHeader>
                     <DialogTitle
                       class="text-xl"
@@ -237,7 +415,10 @@ export default function BookLanding() {
                   <Show
                     when={!subscribed()}
                     fallback={
-                      <p class="text-amber-400 py-4 text-center font-medium">
+                      <p
+                        class="py-4 text-center font-medium"
+                        style="color: var(--magenta)"
+                      >
                         ✓ Check your inbox — it's on its way!
                       </p>
                     }
@@ -255,7 +436,8 @@ export default function BookLanding() {
                       <DialogFooter>
                         <Button
                           type="submit"
-                          class="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold"
+                          class="w-full font-bold text-white"
+                          style="background: var(--magenta); border: none;"
                         >
                           Send My Free Chapter
                         </Button>
@@ -267,46 +449,158 @@ export default function BookLanding() {
             </div>
           </div>
 
-          {/* Book mockup */}
           <div class="flex justify-center">
-            <div class="relative">
-              <img src={`${homePageData()?.heroPicture.url}`} alt="Logo" />
-            </div>
+            <img
+              src={homePageData()?.heroPicture.url ?? ""}
+              alt="Book cover"
+              class="max-w-xs w-full"
+            />
           </div>
         </div>
       </section>
 
-      {/* ── About / Features ───────────────────────────────────────────────── */}
-      <section id="about" class="py-24 px-6 bg-[#0e0f14]">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-16">
+      {/* ── About the Book ─────────────────────────────────────────────────── */}
+      <section id="about" class="py-24 px-6" style="background: #0e101a">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+          <div>
             <SectionLabel>About The Book</SectionLabel>
-            <h2 class="text-4xl md:text-5xl mb-4">
-              Everything you need,
-              <br />
-              <span class="gradient-text">right in your hands</span>
+            <h2
+              class="text-4xl md:text-5xl mb-6"
+              style="font-family:'Playfair Display',serif"
+            >
+              Built for <span class="gradient-text italic">engineers</span>
             </h2>
-            <p class="text-slate-400 max-w-xl mx-auto leading-relaxed">
-              Beautifully crafted for entrepreneurs, managers, and students who
-              want to turn ideas into meaningful action every single day.
+            <p class="text-slate-400 leading-relaxed mb-4">
+              Electronic Circuits Fundamentals was developed while teaching
+              Electronics for several years for students in Electrical and
+              Electronic engineering undergraduate programs.
             </p>
+            <p class="text-slate-400 leading-relaxed mb-8">
+              This book deals with the theory and applications of BJT, MOSFET
+              and Op-amp as active devices. Nine chapters from bipolar junction
+              transistors through fundamentals of feedback and oscillators.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <MagentaBtn onClick={() => scrollTo("#chapters")}>
+                View Table of Contents →
+              </MagentaBtn>
+              <MagentaBtn href={TOC_PDF_URL} size="sm">
+                Download TOC (PDF)
+              </MagentaBtn>
+            </div>
           </div>
-          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <For each={FEATURES}>
-              {(f) => (
-                <Card class="book-card bg-[#13151c] border-white/7">
+
+          {/* Stat pills */}
+          <div class="grid grid-cols-2 gap-4">
+            <For each={STAT_PILLS}>
+              {(s) => (
+                <div
+                  class="book-card flex flex-col items-center justify-center py-8 rounded-xl"
+                  style="background: var(--surface);"
+                >
+                  <span
+                    class="text-4xl font-bold mb-1"
+                    style="font-family:'Playfair Display',serif; color: var(--magenta)"
+                  >
+                    {s.value}
+                  </span>
+                  <span class="text-slate-400 text-sm uppercase tracking-widest">
+                    {s.label}
+                  </span>
+                </div>
+              )}
+            </For>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Key Features ───────────────────────────────────────────────────── */}
+      <section class="py-24 px-6" style="background: #0b0f1f">
+        <div class="max-w-6xl mx-auto">
+          <div class="text-center mb-14">
+            <SectionLabel>Key Features</SectionLabel>
+            <h2
+              class="text-4xl md:text-5xl"
+              style="font-family:'Playfair Display',serif"
+            >
+              What makes this book{" "}
+              <span class="gradient-text italic">different</span>
+            </h2>
+          </div>
+          <div
+            class="grid md:grid-cols-2 book-card overflow-hidden rounded-2xl"
+            style="background: var(--surface);"
+          >
+            <ul
+              class="p-10 space-y-5 md:border-r"
+              style="border-color: rgba(255,255,255,0.06);"
+            >
+              <For each={KEY_FEATURES_LEFT}>
+                {(f) => (
+                  <li class="flex items-start gap-3 text-slate-300 text-sm leading-relaxed">
+                    <span
+                      class="mt-0.5 shrink-0 text-xs"
+                      style="color: var(--magenta)"
+                    >
+                      ✦
+                    </span>
+                    {f}
+                  </li>
+                )}
+              </For>
+            </ul>
+            <ul class="p-10 space-y-5">
+              <For each={KEY_FEATURES_RIGHT}>
+                {(f) => (
+                  <li class="flex items-start gap-3 text-slate-300 text-sm leading-relaxed">
+                    <span
+                      class="mt-0.5 shrink-0 text-xs"
+                      style="color: var(--magenta)"
+                    >
+                      ✦
+                    </span>
+                    {f}
+                  </li>
+                )}
+              </For>
+            </ul>
+          </div>
+          <div class="mt-8 text-center">
+            <MagentaBtn href={AMAZON_URL} class="px-10">
+              📖 Get Your Copy on Amazon
+            </MagentaBtn>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Philosophy / Audience / Pre-reqs / Coverage ────────────────────── */}
+      <section class="py-24 px-6" style="background: #0e101a">
+        <div class="max-w-6xl mx-auto">
+          <div class="text-center mb-14">
+            <SectionLabel>About This Edition</SectionLabel>
+            <h2
+              class="text-4xl md:text-5xl"
+              style="font-family:'Playfair Display',serif"
+            >
+              Who is this book <span class="gradient-text italic">for?</span>
+            </h2>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-5">
+            <For each={INFO_CARDS}>
+              {(card) => (
+                <Card class="book-card" style="background: var(--surface);">
                   <CardHeader>
-                    <div class="text-3xl mb-3">{f.icon}</div>
+                    <div class="text-3xl mb-3">{card.icon}</div>
                     <CardTitle
                       class="text-white text-lg"
                       style="font-family:'Playfair Display',serif"
                     >
-                      {f.title}
+                      {card.title}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p class="text-slate-400 text-sm leading-relaxed">
-                      {f.desc}
+                      {card.body}
                     </p>
                   </CardContent>
                 </Card>
@@ -316,40 +610,237 @@ export default function BookLanding() {
         </div>
       </section>
 
-      {/* ── Chapters ───────────────────────────────────────────────────────── */}
-      <section id="chapters" class="py-24 px-6">
-        <div class="max-w-4xl mx-auto">
+      {/* ── Book Statistics / Chapters ─────────────────────────────────────── */}
+      <section id="chapters" class="py-24 px-6" style="background: #0b0f1f">
+        <div class="max-w-5xl mx-auto">
           <div class="text-center mb-16">
             <SectionLabel>Table of Contents</SectionLabel>
-            <h2 class="text-4xl md:text-5xl mb-4">
-              Chapters <span class="gradient-text italic">we've covered</span>
+            <h2
+              class="text-4xl md:text-5xl mb-4"
+              style="font-family:'Playfair Display',serif"
+            >
+              Book <span class="gradient-text italic">Statistics</span>
             </h2>
             <p class="text-slate-400 max-w-xl mx-auto">
-              Nine deeply researched chapters, each packed with practical
-              frameworks you can apply the same day.
+              337 figures, 86 worked examples, and 297 pages of rigorous circuit
+              theory.
             </p>
           </div>
+
           <div class="book-card overflow-hidden">
+            {/* Header */}
+            <div
+              class="grid text-xs font-bold uppercase tracking-widest"
+              style={`display:grid; ${COL_GRID} background: var(--surface2); border-bottom: 1px solid rgba(255,255,255,0.08); color: #e8edf5;`}
+            >
+              <div class="px-5 py-4 text-center">Chapter No.</div>
+              <div class="px-5 py-4">Title</div>
+              <div class="px-5 py-4 text-center">No. of Figures</div>
+              <div class="px-5 py-4 text-center">No. of Examples</div>
+              <div class="px-5 py-4 text-center">Page Count</div>
+            </div>
+
+            {/* Rows */}
             <For each={CHAPTERS}>
               {(ch) => (
-                <div class="chapter-row flex items-center gap-6 px-7 py-5 last:border-b-0">
-                  <span class="text-amber-400 font-mono text-sm font-bold shrink-0">
-                    {ch.num}
-                  </span>
-                  <span class="flex-1 text-slate-200 font-medium">
-                    {ch.title}
-                  </span>
-                  <span class="text-slate-500 text-sm">{ch.pages} pages</span>
-                  <span class="text-slate-600 text-sm">→</span>
+                <div
+                  class="chapter-row grid items-center"
+                  style={`display:grid; ${COL_GRID}`}
+                >
+                  <div class="px-5 py-5 text-center">
+                    <span
+                      class="font-mono text-sm font-bold"
+                      style={
+                        ch.num === "Appendices"
+                          ? "display:inline-block; padding:2px 8px; border-radius:4px; background:rgba(212,35,110,0.18); color:var(--magenta); font-size:0.7rem;"
+                          : "color: var(--magenta);"
+                      }
+                    >
+                      {ch.num}
+                    </span>
+                  </div>
+                  <div class="px-5 py-5">
+                    <span class="text-slate-200 text-sm font-medium">
+                      {ch.title}
+                    </span>
+                  </div>
+                  <div class="px-5 py-5 text-center text-slate-300 text-sm">
+                    {ch.figures}
+                  </div>
+                  <div class="px-5 py-5 text-center text-slate-300 text-sm">
+                    {ch.examples}
+                  </div>
+                  <div class="px-5 py-5 text-center text-slate-300 text-sm">
+                    {ch.pages}
+                  </div>
                 </div>
               )}
             </For>
+
+            {/* Totals */}
+            <div
+              class="grid items-center font-bold text-sm"
+              style={`display:grid; ${COL_GRID} background: var(--surface2); border-top: 1px solid rgba(255,255,255,0.08); color: #e8edf5;`}
+            >
+              <div
+                class="px-5 py-5 text-center text-xs uppercase tracking-widest"
+                style="color: var(--magenta);"
+              >
+                Total
+              </div>
+              <div class="px-5 py-5" />
+              <div class="px-5 py-5 text-center">{TOTALS.figures}</div>
+              <div class="px-5 py-5 text-center">{TOTALS.examples}</div>
+              <div class="px-5 py-5 text-center">{TOTALS.pages}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Downloads ──────────────────────────────────────────────────────── */}
+      <section id="download" class="py-24 px-6" style="background: #0e101a">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-16">
+            <SectionLabel>Downloads</SectionLabel>
+            <h2
+              class="text-4xl md:text-5xl mb-4"
+              style="font-family:'Playfair Display',serif"
+            >
+              Get your <span class="gradient-text italic">copy</span>
+            </h2>
+            <p class="text-slate-400 max-w-xl mx-auto">
+              Buy on Amazon or grab free sample downloads before you commit.
+            </p>
+          </div>
+
+          <div
+            class="book-card overflow-hidden rounded-2xl grid md:grid-cols-2"
+            style="background: var(--surface);"
+          >
+            {/* Left — buy */}
+            <div
+              class="p-10 flex flex-col gap-6 md:border-r"
+              style="border-color: rgba(255,255,255,0.06);"
+            >
+              <div>
+                <p
+                  class="text-xs font-semibold uppercase tracking-widest mb-2"
+                  style="color: var(--magenta)"
+                >
+                  Buy the Book
+                </p>
+                <h3
+                  class="text-2xl font-bold mb-1"
+                  style="font-family:'Playfair Display',serif"
+                >
+                  Electronic Circuit Fundamentals
+                </h3>
+                <p class="text-slate-500 text-sm">
+                  with Mathcad Examples — A-Imam Al-Sammak
+                </p>
+              </div>
+              <MagentaBtn href={AMAZON_URL} class="px-8 w-fit">
+                🛒 Buy Now on Amazon
+              </MagentaBtn>
+
+              {/* Social share */}
+              <div>
+                <p class="text-xs text-slate-500 uppercase tracking-widest mb-3">
+                  Share
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <For each={SOCIAL_LINKS}>
+                    {(s) => (
+                      <a
+                        href={s.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-xs px-3 py-1.5 rounded font-medium text-slate-300 transition-colors"
+                        style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);"
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.borderColor =
+                            "rgba(212,35,110,0.4)")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.borderColor =
+                            "rgba(255,255,255,0.08)")
+                        }
+                      >
+                        {s.label}
+                      </a>
+                    )}
+                  </For>
+                </div>
+              </div>
+            </div>
+
+            {/* Right — sample downloads */}
+            <div class="p-10 flex flex-col gap-6">
+              <div>
+                <p
+                  class="text-xs font-semibold uppercase tracking-widest mb-2"
+                  style="color: var(--magenta)"
+                >
+                  Free Sample Downloads
+                </p>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                  Try before you buy — download a full sample chapter and all
+                  Mathcad programs.
+                </p>
+              </div>
+
+              <div class="flex flex-col gap-3">
+                <a
+                  href={SAMPLE_CH5_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div
+                    class="book-card flex items-center gap-4 px-5 py-4 rounded-xl cursor-pointer"
+                    style="background: rgba(255,255,255,0.03);"
+                  >
+                    <span class="text-2xl">📄</span>
+                    <div>
+                      <p class="text-slate-200 text-sm font-semibold">
+                        Chapter 5: Differential Amplifiers
+                      </p>
+                      <p class="text-slate-500 text-xs">
+                        Free sample chapter — PDF
+                      </p>
+                    </div>
+                    <span class="ml-auto text-slate-600 text-sm">↓</span>
+                  </div>
+                </a>
+
+                <a
+                  href={MATHCAD_ZIP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div
+                    class="book-card flex items-center gap-4 px-5 py-4 rounded-xl cursor-pointer"
+                    style="background: rgba(255,255,255,0.03);"
+                  >
+                    <span class="text-2xl">🗜️</span>
+                    <div>
+                      <p class="text-slate-200 text-sm font-semibold">
+                        Mathcad Programs
+                      </p>
+                      <p class="text-slate-500 text-xs">
+                        All worked examples — ZIP
+                      </p>
+                    </div>
+                    <span class="ml-auto text-slate-600 text-sm">↓</span>
+                  </div>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── Subscribe banner ───────────────────────────────────────────────── */}
-      <section class="py-16 px-6 bg-[#0e0f14]">
+      <section class="py-16 px-6" style="background: #0b0f1f">
         <div class="max-w-2xl mx-auto text-center">
           <SectionLabel>Free Preview</SectionLabel>
           <h2 class="text-3xl md:text-4xl mb-4">
@@ -362,7 +853,7 @@ export default function BookLanding() {
           <Show
             when={!subscribed()}
             fallback={
-              <p class="text-amber-400 font-semibold text-lg">
+              <p class="font-semibold text-lg" style="color: var(--magenta)">
                 ✓ Your free chapter is on its way!
               </p>
             }
@@ -381,7 +872,8 @@ export default function BookLanding() {
               />
               <Button
                 type="submit"
-                class="bg-amber-500 hover:bg-amber-400 text-black font-bold shrink-0"
+                class="font-bold shrink-0 text-white"
+                style="background: var(--magenta); border: none;"
               >
                 Subscribe
               </Button>
@@ -391,11 +883,14 @@ export default function BookLanding() {
       </section>
 
       {/* ── Testimonials ───────────────────────────────────────────────────── */}
-      <section id="reviews" class="py-24 px-6">
+      <section id="reviews" class="py-24 px-6" style="background: #0e101a">
         <div class="max-w-6xl mx-auto">
           <div class="text-center mb-16">
             <SectionLabel>Reviews</SectionLabel>
-            <h2 class="text-4xl md:text-5xl mb-4">
+            <h2
+              class="text-4xl md:text-5xl mb-4"
+              style="font-family:'Playfair Display',serif"
+            >
               From <span class="gradient-text italic">happy readers</span>
             </h2>
             <p class="text-slate-400 max-w-xl mx-auto">
@@ -406,7 +901,7 @@ export default function BookLanding() {
           <div class="grid md:grid-cols-3 gap-6">
             <For each={TESTIMONIALS}>
               {(t) => (
-                <Card class="book-card bg-[#13151c]">
+                <Card class="book-card" style="background: var(--surface);">
                   <CardHeader>
                     <Stars count={t.rating} />
                     <CardTitle
@@ -438,76 +933,111 @@ export default function BookLanding() {
       </section>
 
       {/* ── Author ─────────────────────────────────────────────────────────── */}
-      <section id="author" class="py-24 px-6 bg-[#0e0f14]">
+      <section id="author" class="py-24 px-6" style="background: #0b0f1f">
         <div class="max-w-5xl mx-auto">
-          <div class="book-card bg-[#13151c] grid md:grid-cols-2 overflow-hidden rounded-2xl">
-            {/* Illustration */}
-            <div
-              class="relative min-h-64 md:min-h-auto"
-              style="background:linear-gradient(135deg,#1c1a10 0%,#2a1f05 100%); display:flex; align-items:center; justify-content:center;"
+          <div class="text-center mb-14">
+            <SectionLabel>Meet the Author</SectionLabel>
+            <h2
+              class="text-4xl md:text-5xl"
+              style="font-family:'Playfair Display',serif"
             >
-              <div style="font-size:8rem; opacity:0.6;">🧑‍💼</div>
+              A-Imam <span class="gradient-text italic">Al-Sammak</span>
+            </h2>
+          </div>
+
+          {/* Bio card */}
+          <div
+            class="book-card grid md:grid-cols-2 overflow-hidden rounded-2xl mb-5"
+            style="background: var(--surface);"
+          >
+            <div
+              class="relative min-h-56 md:min-h-auto"
+              style="background: linear-gradient(135deg, #130d1e 0%, #2a0f1f 100%); display:flex; align-items:center; justify-content:center;"
+            >
+              <div style="font-size:7rem; opacity:0.55;">🧑‍🏫</div>
               <div
                 class="absolute inset-0"
-                style="background:linear-gradient(to right, transparent 60%, #13151c);"
+                style="background: linear-gradient(to right, transparent 55%, var(--surface));"
               />
             </div>
 
             <div class="p-10 flex flex-col justify-center">
-              <SectionLabel>Meet the Author</SectionLabel>
-              <h2
-                class="text-3xl mb-2"
-                style="font-family:'Playfair Display',serif"
+              <p
+                class="text-xs font-semibold uppercase tracking-widest mb-4"
+                style="color: var(--magenta)"
               >
-                Michale John
-              </h2>
-              <p class="text-amber-400 text-sm mb-6">
-                Bestselling Author & Educator
+                Professor of Electronics & Author
               </p>
-              <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                Michale has spent 15 years helping professionals unlock their
-                potential through structured thinking and intentional habit
-                design. His books have been translated into 12 languages and
-                read by over 2 million people worldwide.
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                A-Imam Al-Sammak has over thirty years of university teaching
+                experience, where he taught analog and digital communications,
+                electric circuits, and electronics. He has published more than
+                40 journal and conference papers and holds three patents
+                specialising in electronics for digital communications.
               </p>
-              <ul class="space-y-2 mb-8">
-                {[
-                  "10+ international awards",
-                  "Passionate about practical writing",
-                  "Most popular author of 2024",
-                ].map((item) => (
-                  <li class="flex items-center gap-3 text-slate-300 text-sm">
-                    <span class="text-amber-400">✦</span> {item}
-                  </li>
-                ))}
-              </ul>
-              <div class="flex gap-3">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  class="border-white/15 text-slate-300 hover:border-amber-400/40"
-                >
-                  Twitter
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  class="border-white/15 text-slate-300 hover:border-amber-400/40"
-                >
-                  LinkedIn
-                </Button>
+              <p class="text-slate-400 text-sm leading-relaxed mb-7">
+                Dr Al-Sammak acted as a reviewer for international conferences
+                and journals including IET Wireless Sensor Systems, IET
+                Electronics Letters, IET Communications and IEEE PACRIM. He has
+                been a visiting scientist at the University of Victoria, Canada
+                and Purdue University, USA.
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <MagentaBtn href={TOC_PDF_URL} size="sm">
+                  Read TOC (PDF)
+                </MagentaBtn>
+                <a href={AMAZON_URL} target="_blank" rel="noopener noreferrer">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    class="text-slate-300"
+                    style="border-color: rgba(255,255,255,0.15);"
+                    onMouseEnter={(
+                      e: MouseEvent & { currentTarget: HTMLElement },
+                    ) =>
+                      (e.currentTarget.style.borderColor =
+                        "rgba(212,35,110,0.4)")
+                    }
+                    onMouseLeave={(
+                      e: MouseEvent & { currentTarget: HTMLElement },
+                    ) =>
+                      (e.currentTarget.style.borderColor =
+                        "rgba(255,255,255,0.15)")
+                    }
+                  >
+                    Buy on Amazon
+                  </Button>
+                </a>
               </div>
             </div>
+          </div>
+
+          {/* Credential chips */}
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <For each={AUTHOR_CREDENTIALS}>
+              {(c) => (
+                <div
+                  class="book-card flex items-start gap-3 px-5 py-4 rounded-xl"
+                  style="background: var(--surface);"
+                >
+                  <span class="text-xl shrink-0 mt-0.5">{c.icon}</span>
+                  <p class="text-slate-300 text-sm leading-relaxed">{c.text}</p>
+                </div>
+              )}
+            </For>
           </div>
         </div>
       </section>
 
       {/* ── Pricing ────────────────────────────────────────────────────────── */}
-      <section id="pricing" class="py-24 px-6">
+      <section id="pricing" class="py-24 px-6" style="background: #0e101a">
         <div class="max-w-5xl mx-auto">
           <div class="text-center mb-16">
             <SectionLabel>Pricing & Plans</SectionLabel>
-            <h2 class="text-4xl md:text-5xl mb-4">
+            <h2
+              class="text-4xl md:text-5xl mb-4"
+              style="font-family:'Playfair Display',serif"
+            >
               Choose your <span class="gradient-text italic">edition</span>
             </h2>
             <p class="text-slate-400 max-w-xl mx-auto">
@@ -519,16 +1049,16 @@ export default function BookLanding() {
             <For each={PLANS}>
               {(plan) => (
                 <Card
-                  class={`book-card flex flex-col ${
-                    plan.highlight
-                      ? "plan-highlight border-amber-500/40 scale-[1.02]"
-                      : "bg-[#13151c]"
-                  }`}
+                  class={`book-card flex flex-col ${plan.highlight ? "plan-highlight scale-[1.02]" : ""}`}
+                  style={!plan.highlight ? "background: var(--surface);" : ""}
                 >
                   <CardHeader class="pb-2">
-                    <Show when={plan.badge}>
-                      <Badge class="w-fit mb-3 bg-amber-500/20 text-amber-400 border-amber-500/30 text-xs">
-                        {plan.badge}
+                    <Show when={plan.badge !== null}>
+                      <Badge
+                        class="w-fit mb-3 text-xs"
+                        style="background: rgba(212,35,110,0.18); color: var(--magenta); border-color: rgba(212,35,110,0.3);"
+                      >
+                        {plan.badge!}
                       </Badge>
                     </Show>
                     <CardDescription class="text-slate-400 text-sm">
@@ -543,12 +1073,17 @@ export default function BookLanding() {
                     <p class="text-slate-500 text-xs">{plan.period}</p>
                   </CardHeader>
                   <CardContent class="flex-1 pt-4">
-                    <Separator class="bg-white/7 mb-5" />
+                    <Separator
+                      class="mb-5"
+                      style="background: rgba(255,255,255,0.07);"
+                    />
                     <ul class="space-y-3">
                       <For each={plan.features}>
                         {(feat) => (
                           <li class="flex items-center gap-3 text-slate-300 text-sm">
-                            <span class="text-amber-400 text-xs">✓</span>
+                            <span class="text-xs" style="color: var(--magenta)">
+                              ✓
+                            </span>
                             {feat}
                           </li>
                         )}
@@ -558,11 +1093,30 @@ export default function BookLanding() {
                   <CardFooter class="pt-6">
                     <Button
                       variant={plan.variant}
-                      class={`w-full font-semibold ${
+                      class="w-full font-semibold"
+                      style={
                         plan.highlight
-                          ? "bg-amber-500 hover:bg-amber-400 text-black border-0"
-                          : "border-white/15 text-slate-300 hover:border-amber-400/40"
-                      }`}
+                          ? "background: var(--magenta); color: #fff; border: none;"
+                          : "border-color: rgba(255,255,255,0.15); color: #cbd5e1;"
+                      }
+                      onMouseEnter={(
+                        e: MouseEvent & { currentTarget: HTMLElement },
+                      ) => {
+                        if (plan.highlight)
+                          e.currentTarget.style.background = "#e63d7a";
+                        else
+                          e.currentTarget.style.borderColor =
+                            "rgba(212,35,110,0.4)";
+                      }}
+                      onMouseLeave={(
+                        e: MouseEvent & { currentTarget: HTMLElement },
+                      ) => {
+                        if (plan.highlight)
+                          e.currentTarget.style.background = "var(--magenta)";
+                        else
+                          e.currentTarget.style.borderColor =
+                            "rgba(255,255,255,0.15)";
+                      }}
                     >
                       {plan.cta}
                     </Button>
@@ -575,19 +1129,28 @@ export default function BookLanding() {
       </section>
 
       {/* ── Contact ────────────────────────────────────────────────────────── */}
-      <section id="contact" class="py-24 px-6 bg-[#0e0f14]">
+      <section id="contact" class="py-24 px-6" style="background: #0b0f1f">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-16">
             <SectionLabel>Get in Touch</SectionLabel>
-            <h2 class="text-4xl md:text-5xl mb-4">
+            <h2
+              class="text-4xl md:text-5xl mb-4"
+              style="font-family:'Playfair Display',serif"
+            >
               Contact the <span class="gradient-text italic">Author</span>
             </h2>
             <p class="text-slate-400 max-w-xl mx-auto">
               Questions about the book, bulk orders, or speaking engagements?
-              Michale personally reads every message.
+              Write to{" "}
+              <a
+                href="mailto:info@electronic-circuits.com"
+                style="color: var(--magenta)"
+              >
+                info@electronic-circuits.com
+              </a>
             </p>
           </div>
-          <div class="book-card bg-[#13151c] p-10">
+          <div class="book-card p-10" style="background: var(--surface);">
             <Show
               when={!formSent()}
               fallback={
@@ -639,7 +1202,7 @@ export default function BookLanding() {
                   </label>
                   <textarea
                     rows={5}
-                    placeholder="Tell Michale what's on your mind…"
+                    placeholder="Your question or message…"
                     required
                     value={contactMsg()}
                     onInput={(e) => setContactMsg(e.currentTarget.value)}
@@ -648,7 +1211,14 @@ export default function BookLanding() {
                 <div class="md:col-span-2 flex justify-end">
                   <Button
                     type="submit"
-                    class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-10"
+                    class="font-bold px-10 text-white"
+                    style="background: var(--magenta); border: none;"
+                    onMouseEnter={(
+                      e: MouseEvent & { currentTarget: HTMLElement },
+                    ) => (e.currentTarget.style.background = "#e63d7a")}
+                    onMouseLeave={(
+                      e: MouseEvent & { currentTarget: HTMLElement },
+                    ) => (e.currentTarget.style.background = "var(--magenta)")}
                   >
                     Send Message
                   </Button>
