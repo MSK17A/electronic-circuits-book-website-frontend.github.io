@@ -7,7 +7,7 @@ export const NAV_LINKS = [
   { label: "Chapters", href: "#chapters" },
   { label: "Reviews", href: "#reviews" },
   { label: "Author", href: "#author" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Download", href: "#download" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -70,7 +70,7 @@ export default function Navbar() {
             onMouseLeave={(e) =>
               (e.currentTarget.style.background = "var(--magenta)")
             }
-            onClick={() => scrollTo("#pricing")}
+            onClick={() => scrollTo("#download")}
           >
             Get the Book
           </Button>
@@ -113,7 +113,7 @@ export default function Navbar() {
             onMouseLeave={(e) =>
               (e.currentTarget.style.background = "var(--magenta)")
             }
-            onClick={() => scrollTo("#pricing")}
+            onClick={() => scrollTo("#download")}
           >
             Get the Book
           </Button>
