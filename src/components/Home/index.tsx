@@ -839,49 +839,6 @@ export default function BookLanding() {
         </div>
       </section>
 
-      {/* ── Subscribe banner ───────────────────────────────────────────────── */}
-      <section class="py-16 px-6" style="background: #0b0f1f">
-        <div class="max-w-2xl mx-auto text-center">
-          <SectionLabel>Free Preview</SectionLabel>
-          <h2 class="text-3xl md:text-4xl mb-4">
-            Get a free chapter of this book
-          </h2>
-          <p class="text-slate-400 mb-8 text-sm">
-            Subscribe now — ePub, PDF & iBooks versions included with every
-            download.
-          </p>
-          <Show
-            when={!subscribed()}
-            fallback={
-              <p class="font-semibold text-lg" style="color: var(--magenta)">
-                ✓ Your free chapter is on its way!
-              </p>
-            }
-          >
-            <form
-              onSubmit={handleSubscribe}
-              class="flex gap-3 max-w-sm mx-auto"
-            >
-              <input
-                type="email"
-                placeholder="Enter your email"
-                required
-                value={subscribeEmail()}
-                onInput={(e) => setSubscribeEmail(e.currentTarget.value)}
-                style="flex:1;"
-              />
-              <Button
-                type="submit"
-                class="font-bold shrink-0 text-white"
-                style="background: var(--magenta); border: none;"
-              >
-                Subscribe
-              </Button>
-            </form>
-          </Show>
-        </div>
-      </section>
-
       {/* ── Testimonials ───────────────────────────────────────────────────── */}
       <section id="reviews" class="py-24 px-6" style="background: #0e101a">
         <div class="max-w-6xl mx-auto">
