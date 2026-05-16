@@ -914,7 +914,7 @@ export default function BookLanding() {
               class="relative min-h-56 md:min-h-auto"
               style="background: linear-gradient(135deg, #130d1e 0%, #2a0f1f 100%); display:flex; align-items:center; justify-content:center;"
             >
-              <div style="font-size:7rem; opacity:0.55;">🧑‍🏫</div>
+              <div style="font-size:7rem; opacity:0.55;"></div>
               <div
                 class="absolute inset-0"
                 style="background: linear-gradient(to right, transparent 55%, var(--surface));"
