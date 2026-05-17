@@ -8,15 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 import { scrollTo } from "@/components/Navbar";
 import useHomeData from "./homeData-hook";
@@ -268,17 +259,10 @@ export default function BookLanding() {
   const [contactName, setContactName] = createSignal("");
   const [contactEmail, setContactEmail] = createSignal("");
   const [contactMsg, setContactMsg] = createSignal("");
-  const [freeChapterOpen, setFreeChapterOpen] = createSignal(false);
-  const [subscribeEmail, setSubscribeEmail] = createSignal("");
-  const [subscribed, setSubscribed] = createSignal(false);
 
   const handleContactSubmit = (e: Event) => {
     e.preventDefault();
     setFormSent(true);
-  };
-  const handleSubscribe = (e: Event) => {
-    e.preventDefault();
-    setSubscribed(true);
   };
 
   // Pick up to 3 random testimonials from Strapi data; fall back to empty array
@@ -308,81 +292,6 @@ export default function BookLanding() {
               <MagentaBtn size="lg" onClick={() => scrollTo("#download")}>
                 Get the Book
               </MagentaBtn>
-
-              <Dialog
-                open={freeChapterOpen()}
-                onOpenChange={setFreeChapterOpen}
-              >
-                <DialogTrigger
-                  as={Button}
-                  variant="outline"
-                  size="lg"
-                  class="text-slate-300 hover:text-white"
-                  style="border-color: rgba(255,255,255,0.15);"
-                  onMouseEnter={(
-                    e: MouseEvent & { currentTarget: HTMLElement },
-                  ) =>
-                    (e.currentTarget.style.borderColor = "rgba(212,35,110,0.4)")
-                  }
-                  onMouseLeave={(
-                    e: MouseEvent & { currentTarget: HTMLElement },
-                  ) =>
-                    (e.currentTarget.style.borderColor =
-                      "rgba(255,255,255,0.15)")
-                  }
-                >
-                  Free Chapter →
-                </DialogTrigger>
-                <DialogContent
-                  class="border text-slate-100 max-w-md"
-                  style="background: var(--surface); border-color: rgba(255,255,255,0.1);"
-                >
-                  <DialogHeader>
-                    <DialogTitle
-                      class="text-xl"
-                      style="font-family:'Playfair Display',serif"
-                    >
-                      Get a Free Chapter
-                    </DialogTitle>
-                    <DialogDescription class="text-slate-400">
-                      Enter your email and we'll send Chapter 1 instantly — no
-                      strings attached.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <Show
-                    when={!subscribed()}
-                    fallback={
-                      <p
-                        class="py-4 text-center font-medium"
-                        style="color: var(--magenta)"
-                      >
-                        ✓ Check your inbox — it's on its way!
-                      </p>
-                    }
-                  >
-                    <form onSubmit={handleSubscribe} class="space-y-4 py-2">
-                      <input
-                        type="email"
-                        placeholder="you@example.com"
-                        required
-                        value={subscribeEmail()}
-                        onInput={(e) =>
-                          setSubscribeEmail(e.currentTarget.value)
-                        }
-                      />
-                      <DialogFooter>
-                        <Button
-                          type="submit"
-                          class="w-full font-bold text-white"
-                          style="background: var(--magenta); border: none;"
-                        >
-                          Send My Free Chapter
-                        </Button>
-                      </DialogFooter>
-                    </form>
-                  </Show>
-                </DialogContent>
-              </Dialog>
             </div>
           </div>
 
