@@ -210,58 +210,6 @@ const TESTIMONIALS: {
   },
 ];
 
-const PLANS: {
-  name: string;
-  price: string;
-  period: string;
-  highlight: boolean;
-  badge: string | null;
-  features: string[];
-  cta: string;
-  variant: "outline" | "default";
-}[] = [
-  {
-    name: "Free",
-    price: "$0",
-    period: "Forever free",
-    highlight: false,
-    badge: null,
-    features: ["1 Free Chapter (PDF)", "Email Newsletter", "Community Access"],
-    cta: "Download Free",
-    variant: "outline",
-  },
-  {
-    name: "eBook",
-    price: "$49",
-    period: "One-time purchase",
-    highlight: true,
-    badge: "Most Popular",
-    features: [
-      "Full eBook (ePub + PDF)",
-      "Audio Book",
-      "Lifetime Updates",
-      "Private Community",
-    ],
-    cta: "Buy eBook",
-    variant: "default",
-  },
-  {
-    name: "Full Edition",
-    price: "$79",
-    period: "One-time purchase",
-    highlight: false,
-    badge: null,
-    features: [
-      "Everything in eBook",
-      "Hardcover Copy",
-      "Signed by Author",
-      "Priority Support",
-    ],
-    cta: "Buy Full Edition",
-    variant: "outline",
-  },
-];
-
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 function Stars(props: { count: number }) {
@@ -856,7 +804,7 @@ export default function BookLanding() {
       </section>
 
       {/* ── Subscribe banner ───────────────────────────────────────────────── */}
-      <section class="py-16 px-6" style="background: #0b0f1f">
+      {/* <section class="py-16 px-6" style="background: #0b0f1f">
         <div class="max-w-2xl mx-auto text-center">
           <SectionLabel>Free Preview</SectionLabel>
           <h2 class="text-3xl md:text-4xl mb-4">
@@ -896,7 +844,7 @@ export default function BookLanding() {
             </form>
           </Show>
         </div>
-      </section>
+      </section> */}
 
       {/* ── Testimonials ───────────────────────────────────────────────────── */}
       <section id="reviews" class="py-24 px-6" style="background: #0e101a">
@@ -970,7 +918,7 @@ export default function BookLanding() {
               class="relative min-h-56 md:min-h-auto"
               style="background: linear-gradient(135deg, #130d1e 0%, #2a0f1f 100%); display:flex; align-items:center; justify-content:center;"
             >
-              <div style="font-size:7rem; opacity:0.55;">🧑‍🏫</div>
+              {/*<div style="font-size:7rem; opacity:0.55;">🧑‍🏫</div>*/}
               <div
                 class="absolute inset-0"
                 style="background: linear-gradient(to right, transparent 55%, var(--surface));"
@@ -1039,105 +987,6 @@ export default function BookLanding() {
                   <span class="text-xl shrink-0 mt-0.5">{c.icon}</span>
                   <p class="text-slate-300 text-sm leading-relaxed">{c.text}</p>
                 </div>
-              )}
-            </For>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Pricing ────────────────────────────────────────────────────────── */}
-      <section id="pricing" class="py-24 px-6" style="background: #0e101a">
-        <div class="max-w-5xl mx-auto">
-          <div class="text-center mb-16">
-            <SectionLabel>Pricing & Plans</SectionLabel>
-            <h2
-              class="text-4xl md:text-5xl mb-4"
-              style="font-family:'Playfair Display',serif"
-            >
-              Choose your <span class="gradient-text italic">edition</span>
-            </h2>
-            <p class="text-slate-400 max-w-xl mx-auto">
-              Every edition is a one-time purchase — no subscriptions, no hidden
-              fees.
-            </p>
-          </div>
-          <div class="grid md:grid-cols-3 gap-6 items-stretch">
-            <For each={PLANS}>
-              {(plan) => (
-                <Card
-                  class={`book-card flex flex-col ${plan.highlight ? "plan-highlight scale-[1.02]" : ""}`}
-                  style={!plan.highlight ? "background: var(--surface);" : ""}
-                >
-                  <CardHeader class="pb-2">
-                    <Show when={plan.badge !== null}>
-                      <Badge
-                        class="w-fit mb-3 text-xs"
-                        style="background: rgba(212,35,110,0.18); color: var(--magenta); border-color: rgba(212,35,110,0.3);"
-                      >
-                        {plan.badge!}
-                      </Badge>
-                    </Show>
-                    <CardDescription class="text-slate-400 text-sm">
-                      {plan.name}
-                    </CardDescription>
-                    <CardTitle
-                      class="text-4xl text-white"
-                      style="font-family:'Playfair Display',serif"
-                    >
-                      {plan.price}
-                    </CardTitle>
-                    <p class="text-slate-500 text-xs">{plan.period}</p>
-                  </CardHeader>
-                  <CardContent class="flex-1 pt-4">
-                    <Separator
-                      class="mb-5"
-                      style="background: rgba(255,255,255,0.07);"
-                    />
-                    <ul class="space-y-3">
-                      <For each={plan.features}>
-                        {(feat) => (
-                          <li class="flex items-center gap-3 text-slate-300 text-sm">
-                            <span class="text-xs" style="color: var(--magenta)">
-                              ✓
-                            </span>
-                            {feat}
-                          </li>
-                        )}
-                      </For>
-                    </ul>
-                  </CardContent>
-                  <CardFooter class="pt-6">
-                    <Button
-                      variant={plan.variant}
-                      class="w-full font-semibold"
-                      style={
-                        plan.highlight
-                          ? "background: var(--magenta); color: #fff; border: none;"
-                          : "border-color: rgba(255,255,255,0.15); color: #cbd5e1;"
-                      }
-                      onMouseEnter={(
-                        e: MouseEvent & { currentTarget: HTMLElement },
-                      ) => {
-                        if (plan.highlight)
-                          e.currentTarget.style.background = "#e63d7a";
-                        else
-                          e.currentTarget.style.borderColor =
-                            "rgba(212,35,110,0.4)";
-                      }}
-                      onMouseLeave={(
-                        e: MouseEvent & { currentTarget: HTMLElement },
-                      ) => {
-                        if (plan.highlight)
-                          e.currentTarget.style.background = "var(--magenta)";
-                        else
-                          e.currentTarget.style.borderColor =
-                            "rgba(255,255,255,0.15)";
-                      }}
-                    >
-                      {plan.cta}
-                    </Button>
-                  </CardFooter>
-                </Card>
               )}
             </For>
           </div>
