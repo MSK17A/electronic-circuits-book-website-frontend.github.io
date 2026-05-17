@@ -17,6 +17,7 @@ export interface HomePageData {
   aboutTheAuthor: string;
   author_credentials: AuthorCredentials[];
   id: number;
+  uploadedFiles: UploadedFile[];
   publishedId: string;
   updatedAt: string;
 }
@@ -26,3 +27,12 @@ interface AuthorCredentials {
   icon: string;
 }
 export type HomePageDataResponse = ApiBaseResponse<HomePageData>;
+
+export interface UploadedFile {
+  id: number;
+  name: string;
+  ext: string;
+  mime: string;
+  size: number; // KB
+  url: string;
+}

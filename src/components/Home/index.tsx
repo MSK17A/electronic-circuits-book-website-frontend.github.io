@@ -24,7 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { scrollTo } from "@/components/Navbar";
 import useHomeData from "./homeData-hook";
 import "./styles.css";
-import StrapiLucidIcon from "../ui/strapi-lucid-icon";
+import UploadedFiles from "./uploaded-files";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -99,24 +99,24 @@ const INFO_CARDS: { icon: string; title: string; body: string }[] = [
   },
 ];
 
-// const AUTHOR_CREDENTIALS: { icon: string; text: string }[] = [
-//   { icon: "🎓", text: "M.Sc. Digital Communications — University of Kent, UK" },
-//   { icon: "🎓", text: "Ph.D. Communications — University of Manchester, UK" },
-//   {
-//     icon: "🏛️",
-//     text: "Visiting Scientist — University of Victoria, Canada & Purdue University, USA",
-//   },
-//   { icon: "📄", text: "40+ published journal and conference papers" },
-//   {
-//     icon: "💡",
-//     text: "3 patents specialising in electronics for digital communications",
-//   },
-//   {
-//     icon: "🔬",
-//     text: "Reviewer for IET, IEEE PACRIM, and other international journals",
-//   },
-//   { icon: "🏅", text: "Chartered Engineer & Member of IET (UK)" },
-// ];
+const AUTHOR_CREDENTIALS: { icon: string; text: string }[] = [
+  { icon: "🎓", text: "M.Sc. Digital Communications — University of Kent, UK" },
+  { icon: "🎓", text: "Ph.D. Communications — University of Manchester, UK" },
+  {
+    icon: "🏛️",
+    text: "Visiting Scientist — University of Victoria, Canada & Purdue University, USA",
+  },
+  { icon: "📄", text: "40+ published journal and conference papers" },
+  {
+    icon: "💡",
+    text: "3 patents specialising in electronics for digital communications",
+  },
+  {
+    icon: "🔬",
+    text: "Reviewer for IET, IEEE PACRIM, and other international journals",
+  },
+  { icon: "🏅", text: "Chartered Engineer & Member of IET (UK)" },
+];
 
 const CHAPTERS: {
   num: string;
@@ -348,8 +348,6 @@ export default function BookLanding() {
     e.preventDefault();
     setSubscribed(true);
   };
-
-  const AUTHOR_CREDENTIALS = homePageData()?.author_credentials;
 
   return (
     <div
@@ -777,68 +775,126 @@ export default function BookLanding() {
               </div>
             </div>
 
-            {/* Right — sample downloads */}
-            <div class="p-10 flex flex-col gap-6">
-              <div>
+            {/* Right — chapter slides + static sample downloads */}
+            <div
+              class="p-10 flex flex-col gap-6 overflow-y-auto"
+              style="max-height: 560px;"
+            >
+              {/* Static samples */}
+              {/*<div>
                 <p
-                  class="text-xs font-semibold uppercase tracking-widest mb-2"
+                  class="text-xs font-semibold uppercase tracking-widest mb-3"
                   style="color: var(--magenta)"
                 >
                   Free Sample Downloads
                 </p>
-                <p class="text-slate-400 text-sm leading-relaxed">
-                  Try before you buy — download a full sample chapter and all
-                  Mathcad programs.
-                </p>
-              </div>
-
-              <div class="flex flex-col gap-3">
-                <a
-                  href={SAMPLE_CH5_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <div
-                    class="book-card flex items-center gap-4 px-5 py-4 rounded-xl cursor-pointer"
-                    style="background: rgba(255,255,255,0.03);"
+                <div class="flex flex-col gap-2 mb-6">
+                  <a
+                    href={SAMPLE_CH5_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    <span class="text-2xl">📄</span>
-                    <div>
-                      <p class="text-slate-200 text-sm font-semibold">
-                        Chapter 5: Differential Amplifiers
-                      </p>
-                      <p class="text-slate-500 text-xs">
-                        Free sample chapter — PDF
-                      </p>
+                    <div
+                      class="book-card flex items-center gap-4 px-4 py-3 rounded-xl cursor-pointer"
+                      style="background: rgba(255,255,255,0.03);"
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(212,35,110,0.06)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(255,255,255,0.03)")
+                      }
+                    >
+                      <span class="text-lg">📄</span>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-slate-200 text-sm font-medium">
+                          Chapter 5: Differential Amplifiers
+                        </p>
+                        <p class="text-slate-500 text-xs">Free sample — PDF</p>
+                      </div>
+                      <span class="text-slate-600 text-sm">↓</span>
                     </div>
-                    <span class="ml-auto text-slate-600 text-sm">↓</span>
-                  </div>
-                </a>
-
-                <a
-                  href={MATHCAD_ZIP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <div
-                    class="book-card flex items-center gap-4 px-5 py-4 rounded-xl cursor-pointer"
-                    style="background: rgba(255,255,255,0.03);"
+                  </a>
+                  <a
+                    href={MATHCAD_ZIP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    <span class="text-2xl">🗜️</span>
-                    <div>
-                      <p class="text-slate-200 text-sm font-semibold">
-                        Mathcad Programs
-                      </p>
-                      <p class="text-slate-500 text-xs">
-                        All worked examples — ZIP
-                      </p>
+                    <div
+                      class="book-card flex items-center gap-4 px-4 py-3 rounded-xl cursor-pointer"
+                      style="background: rgba(255,255,255,0.03);"
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(212,35,110,0.06)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(255,255,255,0.03)")
+                      }
+                    >
+                      <span class="text-lg">🗜️</span>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-slate-200 text-sm font-medium">
+                          Mathcad Programs
+                        </p>
+                        <p class="text-slate-500 text-xs">
+                          All worked examples — ZIP
+                        </p>
+                      </div>
+                      <span class="text-slate-600 text-sm">↓</span>
                     </div>
-                    <span class="ml-auto text-slate-600 text-sm">↓</span>
-                  </div>
-                </a>
-              </div>
+                  </a>
+                </div>
+              </div>*/}
+
+              {/* Dynamic chapter slides from Strapi */}
+              <UploadedFiles files={homePageData()?.uploadedFiles} />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── Subscribe banner ───────────────────────────────────────────────── */}
+      <section class="py-16 px-6" style="background: #0b0f1f">
+        <div class="max-w-2xl mx-auto text-center">
+          <SectionLabel>Free Preview</SectionLabel>
+          <h2 class="text-3xl md:text-4xl mb-4">
+            Get a free chapter of this book
+          </h2>
+          <p class="text-slate-400 mb-8 text-sm">
+            Subscribe now — ePub, PDF & iBooks versions included with every
+            download.
+          </p>
+          <Show
+            when={!subscribed()}
+            fallback={
+              <p class="font-semibold text-lg" style="color: var(--magenta)">
+                ✓ Your free chapter is on its way!
+              </p>
+            }
+          >
+            <form
+              onSubmit={handleSubscribe}
+              class="flex gap-3 max-w-sm mx-auto"
+            >
+              <input
+                type="email"
+                placeholder="Enter your email"
+                required
+                value={subscribeEmail()}
+                onInput={(e) => setSubscribeEmail(e.currentTarget.value)}
+                style="flex:1;"
+              />
+              <Button
+                type="submit"
+                class="font-bold shrink-0 text-white"
+                style="background: var(--magenta); border: none;"
+              >
+                Subscribe
+              </Button>
+            </form>
+          </Show>
         </div>
       </section>
 
@@ -914,7 +970,7 @@ export default function BookLanding() {
               class="relative min-h-56 md:min-h-auto"
               style="background: linear-gradient(135deg, #130d1e 0%, #2a0f1f 100%); display:flex; align-items:center; justify-content:center;"
             >
-              <div style="font-size:7rem; opacity:0.55;"></div>
+              <div style="font-size:7rem; opacity:0.55;">🧑‍🏫</div>
               <div
                 class="absolute inset-0"
                 style="background: linear-gradient(to right, transparent 55%, var(--surface));"
@@ -928,10 +984,20 @@ export default function BookLanding() {
               >
                 Professor of Electronics & Author
               </p>
-              <p class="text-slate-300 text-sm leading-relaxed mb-3 whitespace-pre-line">
-                {homePageData()?.aboutTheAuthor}
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                A-Imam Al-Sammak has over thirty years of university teaching
+                experience, where he taught analog and digital communications,
+                electric circuits, and electronics. He has published more than
+                40 journal and conference papers and holds three patents
+                specialising in electronics for digital communications.
               </p>
-
+              <p class="text-slate-400 text-sm leading-relaxed mb-7">
+                Dr Al-Sammak acted as a reviewer for international conferences
+                and journals including IET Wireless Sensor Systems, IET
+                Electronics Letters, IET Communications and IEEE PACRIM. He has
+                been a visiting scientist at the University of Victoria, Canada
+                and Purdue University, USA.
+              </p>
               <div class="flex flex-wrap gap-3">
                 <MagentaBtn href={TOC_PDF_URL} size="sm">
                   Read TOC (PDF)
@@ -964,19 +1030,114 @@ export default function BookLanding() {
 
           {/* Credential chips */}
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            <For each={homePageData()?.author_credentials}>
+            <For each={AUTHOR_CREDENTIALS}>
               {(c) => (
                 <div
                   class="book-card flex items-start gap-3 px-5 py-4 rounded-xl"
                   style="background: var(--surface);"
                 >
-                  <span class="text-xl shrink-0 mt-0.5">
-                    <StrapiLucidIcon name={c.icon} />
-                  </span>
-                  <p class="text-slate-300 text-sm leading-relaxed">
-                    {c.description}
-                  </p>
+                  <span class="text-xl shrink-0 mt-0.5">{c.icon}</span>
+                  <p class="text-slate-300 text-sm leading-relaxed">{c.text}</p>
                 </div>
+              )}
+            </For>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Pricing ────────────────────────────────────────────────────────── */}
+      <section id="pricing" class="py-24 px-6" style="background: #0e101a">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-16">
+            <SectionLabel>Pricing & Plans</SectionLabel>
+            <h2
+              class="text-4xl md:text-5xl mb-4"
+              style="font-family:'Playfair Display',serif"
+            >
+              Choose your <span class="gradient-text italic">edition</span>
+            </h2>
+            <p class="text-slate-400 max-w-xl mx-auto">
+              Every edition is a one-time purchase — no subscriptions, no hidden
+              fees.
+            </p>
+          </div>
+          <div class="grid md:grid-cols-3 gap-6 items-stretch">
+            <For each={PLANS}>
+              {(plan) => (
+                <Card
+                  class={`book-card flex flex-col ${plan.highlight ? "plan-highlight scale-[1.02]" : ""}`}
+                  style={!plan.highlight ? "background: var(--surface);" : ""}
+                >
+                  <CardHeader class="pb-2">
+                    <Show when={plan.badge !== null}>
+                      <Badge
+                        class="w-fit mb-3 text-xs"
+                        style="background: rgba(212,35,110,0.18); color: var(--magenta); border-color: rgba(212,35,110,0.3);"
+                      >
+                        {plan.badge!}
+                      </Badge>
+                    </Show>
+                    <CardDescription class="text-slate-400 text-sm">
+                      {plan.name}
+                    </CardDescription>
+                    <CardTitle
+                      class="text-4xl text-white"
+                      style="font-family:'Playfair Display',serif"
+                    >
+                      {plan.price}
+                    </CardTitle>
+                    <p class="text-slate-500 text-xs">{plan.period}</p>
+                  </CardHeader>
+                  <CardContent class="flex-1 pt-4">
+                    <Separator
+                      class="mb-5"
+                      style="background: rgba(255,255,255,0.07);"
+                    />
+                    <ul class="space-y-3">
+                      <For each={plan.features}>
+                        {(feat) => (
+                          <li class="flex items-center gap-3 text-slate-300 text-sm">
+                            <span class="text-xs" style="color: var(--magenta)">
+                              ✓
+                            </span>
+                            {feat}
+                          </li>
+                        )}
+                      </For>
+                    </ul>
+                  </CardContent>
+                  <CardFooter class="pt-6">
+                    <Button
+                      variant={plan.variant}
+                      class="w-full font-semibold"
+                      style={
+                        plan.highlight
+                          ? "background: var(--magenta); color: #fff; border: none;"
+                          : "border-color: rgba(255,255,255,0.15); color: #cbd5e1;"
+                      }
+                      onMouseEnter={(
+                        e: MouseEvent & { currentTarget: HTMLElement },
+                      ) => {
+                        if (plan.highlight)
+                          e.currentTarget.style.background = "#e63d7a";
+                        else
+                          e.currentTarget.style.borderColor =
+                            "rgba(212,35,110,0.4)";
+                      }}
+                      onMouseLeave={(
+                        e: MouseEvent & { currentTarget: HTMLElement },
+                      ) => {
+                        if (plan.highlight)
+                          e.currentTarget.style.background = "var(--magenta)";
+                        else
+                          e.currentTarget.style.borderColor =
+                            "rgba(255,255,255,0.15)";
+                      }}
+                    >
+                      {plan.cta}
+                    </Button>
+                  </CardFooter>
+                </Card>
               )}
             </For>
           </div>
