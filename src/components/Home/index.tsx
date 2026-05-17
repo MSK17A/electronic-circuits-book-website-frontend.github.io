@@ -28,11 +28,11 @@ import UploadedFiles from "./uploaded-files";
 const AMAZON_URL =
   "https://www.amazon.com/Electronic-Circuits-Fundamentals-Mathcad-Examples/dp/B0CJKL2N47/";
 const TOC_PDF_URL =
-  "https://electronic-circuits.com/wp-content/uploads/2023/12/Electronic-Circuits-TOC.pdf";
+  "https://ambitious-reward-466c838693.media.strapiapp.com/Electronic_Circuits_TOC_55a9670cb1.pdf";
 const SAMPLE_CH5_URL =
-  "https://electronic-circuits.com/wp-content/uploads/2024/01/Sample-chapter-Chapter-5.pdf";
+  "https://ambitious-reward-466c838693.media.strapiapp.com/Sample_chapter_Chapter_5_d4e57dcd4b.pdf";
 const MATHCAD_ZIP_URL =
-  "https://electronic-circuits.com/wp-content/uploads/2024/01/Book-examples.zip";
+  "https://ambitious-reward-466c838693.media.strapiapp.com/Chapter_06_OPERATIONAL_AMPLIFIERS_4ce4be0012.pptx";
 
 const SHARE_BASE = "https://electronic-circuits.com/download-book/";
 const SOCIAL_LINKS: { label: string; href: string }[] = [
@@ -714,6 +714,75 @@ export default function BookLanding() {
               class="p-10 flex flex-col gap-6 overflow-y-auto"
               style="max-height: 560px;"
             >
+              {/* Static samples */}
+              <div>
+                <p
+                  class="text-xs font-semibold uppercase tracking-widest mb-3"
+                  style="color: var(--magenta)"
+                >
+                  Free Sample Downloads
+                </p>
+                <div class="flex flex-col gap-2 mb-6">
+                  <a
+                    href={SAMPLE_CH5_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <div
+                      class="book-card flex items-center gap-4 px-4 py-3 rounded-xl cursor-pointer"
+                      style="background: rgba(255,255,255,0.03);"
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(212,35,110,0.06)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(255,255,255,0.03)")
+                      }
+                    >
+                      <span class="text-lg">📄</span>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-slate-200 text-sm font-medium">
+                          Chapter 5: Differential Amplifiers
+                        </p>
+                        <p class="text-slate-500 text-xs">Free sample — PDF</p>
+                      </div>
+                      <span class="text-slate-600 text-sm">↓</span>
+                    </div>
+                  </a>
+                  <a
+                    href={MATHCAD_ZIP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <div
+                      class="book-card flex items-center gap-4 px-4 py-3 rounded-xl cursor-pointer"
+                      style="background: rgba(255,255,255,0.03);"
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(212,35,110,0.06)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(255,255,255,0.03)")
+                      }
+                    >
+                      <span class="text-lg">🗜️</span>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-slate-200 text-sm font-medium">
+                          Mathcad Programs
+                        </p>
+                        <p class="text-slate-500 text-xs">
+                          All worked examples — ZIP
+                        </p>
+                      </div>
+                      <span class="text-slate-600 text-sm">↓</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+
+              {/* Dynamic chapter slides from Strapi */}
               <UploadedFiles files={homePageData()?.uploadedFiles} />
             </div>
           </div>
