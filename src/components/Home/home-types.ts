@@ -7,7 +7,7 @@ export interface HomePageData {
   heroSubtitle: string;
   heroTitle: string;
   description: string;
-  testimonials: string[];
+  testimonials: Testimonial[];
   heroPicture: {
     width: number;
     height: number;
@@ -35,4 +35,11 @@ export interface UploadedFile {
   mime: string;
   size: number; // KB
   url: string;
+}
+
+export interface Testimonial {
+  id: number;
+  quote: string;
+  reviewerName: string;
+  reviewerTitle: string;
 }

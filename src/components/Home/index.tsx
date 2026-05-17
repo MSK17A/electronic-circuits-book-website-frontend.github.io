@@ -7,7 +7,6 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
 import {
   Dialog,
@@ -18,8 +17,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 
 import { scrollTo } from "@/components/Navbar";
 import useHomeData from "./homeData-hook";
@@ -57,7 +54,7 @@ const SOCIAL_LINKS: { label: string; href: string }[] = [
   },
 ];
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
+// ─── Static data ──────────────────────────────────────────────────────────────
 
 const KEY_FEATURES_LEFT: string[] = [
   "Concentrate on underlying principle and the logic behind the topic studied.",
@@ -180,35 +177,22 @@ const STAT_PILLS: { value: string; label: string }[] = [
   { value: "9", label: "Chapters" },
 ];
 
-const TESTIMONIALS: {
-  name: string;
-  role: string;
-  text: string;
-  avatar: string;
-  rating: number;
-}[] = [
-  {
-    name: "Sarah Chen",
-    role: "Product Designer",
-    text: "A transformative read. Every chapter unlocked a new way of seeing challenges — I keep coming back to it.",
-    avatar: "SC",
-    rating: 5,
-  },
-  {
-    name: "Marcus Webb",
-    role: "Startup Founder",
-    text: "Practical, profound, and packed with actionable insight. Best investment I made this year.",
-    avatar: "MW",
-    rating: 5,
-  },
-  {
-    name: "Aisha Patel",
-    role: "Engineering Manager",
-    text: "The chapter on communication frameworks alone is worth three times the price.",
-    avatar: "AP",
-    rating: 5,
-  },
-];
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/** Get initials from a name, e.g. "Lala Popo" → "LP" */
+function initials(name: string): string {
+  return name
+    .split(" ")
+    .map((w) => w[0] ?? "")
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
+
+/** Pick up to `n` random items from an array (deterministic shuffle via sort). */
+function pickRandom<T>(arr: T[], n: number): T[] {
+  return [...arr].sort(() => Math.random() - 0.5).slice(0, n);
+}
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -296,6 +280,10 @@ export default function BookLanding() {
     e.preventDefault();
     setSubscribed(true);
   };
+
+  // Pick up to 3 random testimonials from Strapi data; fall back to empty array
+  const displayedTestimonials = () =>
+    pickRandom(homePageData()?.testimonials ?? [], 3);
 
   return (
     <div
@@ -439,7 +427,6 @@ export default function BookLanding() {
             </div>
           </div>
 
-          {/* Stat pills */}
           <div class="grid grid-cols-2 gap-4">
             <For each={STAT_PILLS}>
               {(s) => (
@@ -666,7 +653,7 @@ export default function BookLanding() {
             class="book-card overflow-hidden rounded-2xl grid md:grid-cols-2"
             style="background: var(--surface);"
           >
-            {/* Left — buy */}
+            {/* Left — buy + share */}
             <div
               class="p-10 flex flex-col gap-6 md:border-r"
               style="border-color: rgba(255,255,255,0.06);"
@@ -692,7 +679,6 @@ export default function BookLanding() {
                 🛒 Buy Now on Amazon
               </MagentaBtn>
 
-              {/* Social share */}
               <div>
                 <p class="text-xs text-slate-500 uppercase tracking-widest mb-3">
                   Share
@@ -723,181 +709,78 @@ export default function BookLanding() {
               </div>
             </div>
 
-            {/* Right — chapter slides + static sample downloads */}
+            {/* Right — lecture slides from Strapi */}
             <div
               class="p-10 flex flex-col gap-6 overflow-y-auto"
               style="max-height: 560px;"
             >
-              {/* Static samples */}
-              {/*<div>
-                <p
-                  class="text-xs font-semibold uppercase tracking-widest mb-3"
-                  style="color: var(--magenta)"
-                >
-                  Free Sample Downloads
-                </p>
-                <div class="flex flex-col gap-2 mb-6">
-                  <a
-                    href={SAMPLE_CH5_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <div
-                      class="book-card flex items-center gap-4 px-4 py-3 rounded-xl cursor-pointer"
-                      style="background: rgba(255,255,255,0.03);"
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.background =
-                          "rgba(212,35,110,0.06)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.background =
-                          "rgba(255,255,255,0.03)")
-                      }
-                    >
-                      <span class="text-lg">📄</span>
-                      <div class="flex-1 min-w-0">
-                        <p class="text-slate-200 text-sm font-medium">
-                          Chapter 5: Differential Amplifiers
-                        </p>
-                        <p class="text-slate-500 text-xs">Free sample — PDF</p>
-                      </div>
-                      <span class="text-slate-600 text-sm">↓</span>
-                    </div>
-                  </a>
-                  <a
-                    href={MATHCAD_ZIP_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <div
-                      class="book-card flex items-center gap-4 px-4 py-3 rounded-xl cursor-pointer"
-                      style="background: rgba(255,255,255,0.03);"
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.background =
-                          "rgba(212,35,110,0.06)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.background =
-                          "rgba(255,255,255,0.03)")
-                      }
-                    >
-                      <span class="text-lg">🗜️</span>
-                      <div class="flex-1 min-w-0">
-                        <p class="text-slate-200 text-sm font-medium">
-                          Mathcad Programs
-                        </p>
-                        <p class="text-slate-500 text-xs">
-                          All worked examples — ZIP
-                        </p>
-                      </div>
-                      <span class="text-slate-600 text-sm">↓</span>
-                    </div>
-                  </a>
-                </div>
-              </div>*/}
-
-              {/* Dynamic chapter slides from Strapi */}
               <UploadedFiles files={homePageData()?.uploadedFiles} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Subscribe banner ───────────────────────────────────────────────── */}
-      {/* <section class="py-16 px-6" style="background: #0b0f1f">
-        <div class="max-w-2xl mx-auto text-center">
-          <SectionLabel>Free Preview</SectionLabel>
-          <h2 class="text-3xl md:text-4xl mb-4">
-            Get a free chapter of this book
-          </h2>
-          <p class="text-slate-400 mb-8 text-sm">
-            Subscribe now — ePub, PDF & iBooks versions included with every
-            download.
-          </p>
-          <Show
-            when={!subscribed()}
-            fallback={
-              <p class="font-semibold text-lg" style="color: var(--magenta)">
-                ✓ Your free chapter is on its way!
-              </p>
-            }
-          >
-            <form
-              onSubmit={handleSubscribe}
-              class="flex gap-3 max-w-sm mx-auto"
-            >
-              <input
-                type="email"
-                placeholder="Enter your email"
-                required
-                value={subscribeEmail()}
-                onInput={(e) => setSubscribeEmail(e.currentTarget.value)}
-                style="flex:1;"
-              />
-              <Button
-                type="submit"
-                class="font-bold shrink-0 text-white"
-                style="background: var(--magenta); border: none;"
-              >
-                Subscribe
-              </Button>
-            </form>
-          </Show>
-        </div>
-      </section> */}
-
       {/* ── Testimonials ───────────────────────────────────────────────────── */}
-      <section id="reviews" class="py-24 px-6" style="background: #0e101a">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-16">
-            <SectionLabel>Reviews</SectionLabel>
-            <h2
-              class="text-4xl md:text-5xl mb-4"
-              style="font-family:'Playfair Display',serif"
-            >
-              From <span class="gradient-text italic">happy readers</span>
-            </h2>
-            <p class="text-slate-400 max-w-xl mx-auto">
-              Thousands of professionals have used this book to change how they
-              work and think.
-            </p>
-          </div>
-          <div class="grid md:grid-cols-3 gap-6">
-            <For each={TESTIMONIALS}>
-              {(t) => (
-                <Card class="book-card" style="background: var(--surface);">
-                  <CardHeader>
-                    <Stars count={t.rating} />
-                    <CardTitle
-                      class="text-white text-base font-semibold mt-3"
-                      style="font-family:'Playfair Display',serif"
-                    >
-                      Very Effective!
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p class="text-slate-400 text-sm leading-relaxed italic">
-                      "{t.text}"
-                    </p>
-                  </CardContent>
-                  <CardFooter>
-                    <div class="flex items-center gap-3">
-                      <div class="avatar-chip">{t.avatar}</div>
-                      <div>
-                        <p class="text-white text-sm font-semibold">{t.name}</p>
-                        <p class="text-slate-500 text-xs">{t.role}</p>
+      <Show when={(homePageData()?.testimonials ?? []).length > 0}>
+        <section id="reviews" class="py-24 px-6" style="background: #0b0f1f">
+          <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+              <SectionLabel>Reviews</SectionLabel>
+              <h2
+                class="text-4xl md:text-5xl mb-4"
+                style="font-family:'Playfair Display',serif"
+              >
+                From <span class="gradient-text italic">happy readers</span>
+              </h2>
+              <p class="text-slate-400 max-w-xl mx-auto">
+                What students and professionals are saying about the book.
+              </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+              <For each={displayedTestimonials()}>
+                {(t) => (
+                  <Card
+                    class="book-card flex flex-col"
+                    style="background: var(--surface);"
+                  >
+                    <CardHeader>
+                      {/* 5 stars — all Strapi reviews are treated as 5-star */}
+                      <Stars count={5} />
+                      <CardTitle
+                        class="text-white text-base font-semibold mt-3"
+                        style="font-family:'Playfair Display',serif"
+                      >
+                        {t.reviewerTitle}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent class="flex-1">
+                      <p class="text-slate-400 text-sm leading-relaxed italic">
+                        "{t.quote}"
+                      </p>
+                    </CardContent>
+                    <CardFooter>
+                      <div class="flex items-center gap-3">
+                        <div class="avatar-chip">
+                          {initials(t.reviewerName)}
+                        </div>
+                        <div>
+                          <p class="text-white text-sm font-semibold">
+                            {t.reviewerName}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </CardFooter>
-                </Card>
-              )}
-            </For>
+                    </CardFooter>
+                  </Card>
+                )}
+              </For>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </Show>
 
       {/* ── Author ─────────────────────────────────────────────────────────── */}
-      <section id="author" class="py-24 px-6" style="background: #0b0f1f">
+      <section id="author" class="py-24 px-6" style="background: #0e101a">
         <div class="max-w-5xl mx-auto">
           <div class="text-center mb-14">
             <SectionLabel>Meet the Author</SectionLabel>
@@ -918,7 +801,6 @@ export default function BookLanding() {
               class="relative min-h-56 md:min-h-auto"
               style="background: linear-gradient(135deg, #130d1e 0%, #2a0f1f 100%); display:flex; align-items:center; justify-content:center;"
             >
-              {/*<div style="font-size:7rem; opacity:0.55;">🧑‍🏫</div>*/}
               <div
                 class="absolute inset-0"
                 style="background: linear-gradient(to right, transparent 55%, var(--surface));"
